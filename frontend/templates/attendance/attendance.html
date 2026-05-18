@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudySync - Attendance</title>
+  <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="attendance.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════ -->
+  <nav class="navbar">
+
+    <!-- Left -->
+    <div class="nav-left">
+
+      <!-- Logo -->
+      <a href="#" class="logo" onclick="event.preventDefault(); openAboutModal();">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/>
+            <path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/>
+          </svg>
+        </div>
+        <span class="logo-text">StudySync</span>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <!-- Nav Links -->
+      <ul class="nav-links">
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Home
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Dashboard
+          </a>
+        </li>
+
+        <li>
+          <a href="../attendance/attendance.html"
+            class="nav-link active">
+            Attendance
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Assignments
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Study Planner
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Notes
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Calendar
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <!-- Right -->
+    <div class="nav-right">
+
+      <!-- Bell -->
+        <div class="notification-box" id="bellBtn">
+
+            <i class="fa-regular fa-bell"></i>
+
+            <span class="notification-count">
+                1
+            </span>
+
+        </div>
+
+        <!-- PROFILE -->
+
+        <div class="profile-container">
+
+            <button class="profile-btn"
+                id="profileBtn">
+                    S
+            </button>
+
+            <!-- DROPDOWN -->
+
+            <div class="profile-dropdown"
+                id="profileDropdown">
+
+                <!-- HEADER -->
+
+                <div class="profile-header">
+
+                    <h3>
+                        Student Profile
+                    </h3>
+
+                    <p>
+                        student@studysync.com
+                    </p>
+
+                </div>
+
+                <!-- OPTIONS -->
+
+                <div class="dropdown-option">
+
+                    <i class="fa-solid fa-code"></i>
+
+                    Current Build
+
+                </div>
+
+                <div class="dropdown-option">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    Joined Workspace
+
+                </div>
+
+                <div class="dropdown-option">
+
+                    <i class="fa-solid fa-repeat"></i>
+
+                    Switch Workspace
+
+                </div>
+
+                <div class="dropdown-option">
+                    <i class="fa-solid fa-gear"></i>
+                        Settings
+                </div>
+
+                <hr>
+
+                    <!-- APPEARANCE -->
+
+                    <div class="theme-title">
+
+                        Appearance Mode
+
+                    </div>
+
+                    <div class="theme-buttons">
+
+                      <button id="lightMode">Light</button>
+
+                      <button id="darkMode">Dark</button>
+
+                    </div>
+
+                <hr>
+
+                    <!-- LOGOUT -->
+
+                    <div class="dropdown-option logout">
+
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                        Logout
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+  </nav>
+
+<!-- ════════════════════════════════════════
+     PAGE: ATTENDANCE
+════════════════════════════════════════ -->
+<div id="page-attendance" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <div class="page-header-icon icon-violet">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+      </div>
+      <div class="page-header-text">
+        <h1>Attendance</h1>
+        <p>Log and monitor your daily class attendance and absence records.</p>
+      </div>
+      <button class="action-btn btn-violet" style="margin-left:auto" onclick="alert('Mark attendance...')">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Mark Today
+      </button>
+    </div>
+
+    <!-- Tab Options Bar -->
+    <div class="page-tabs" id="tabs-attendance">
+      <button class="page-tab active" onclick="switchTab('attendance','overview',this)">Overview</button>
+      <button class="page-tab" onclick="switchTab('attendance','records',this)">Records</button>
+      <button class="page-tab" onclick="switchTab('attendance','subjects',this)">By Subject</button>
+      <button class="page-tab" onclick="switchTab('attendance','report',this)">Report</button>
+    </div>
+
+    <!-- Tab: Overview -->
+    <div class="tab-panel active" id="attendance-overview">
+    <div class="summary-row">
+      <div class="sum-chip"><span class="s-val" style="color:#7c3aed">85%</span><span class="s-lbl">Overall Rate</span></div>
+      <div class="sum-chip"><span class="s-val" style="color:#10b981">17</span><span class="s-lbl">Days Present</span></div>
+      <div class="sum-chip"><span class="s-val" style="color:#ef4444">3</span><span class="s-lbl">Absences</span></div>
+      <div class="sum-chip"><span class="s-val" style="color:#f59e0b">2</span><span class="s-lbl">Late Arrivals</span></div>
+    </div>
+
+    <div class="section-box">
+      <div class="section-box-header">Subject-wise Attendance <span class="sub">May 2026</span></div>
+      <div style="padding:18px 22px;">
+        <div class="prog-wrap">
+          <div class="prog-label"><span>Mathematics</span><span>92%</span></div>
+          <div class="prog-track"><div class="prog-fill prog-violet" style="width:92%"></div></div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-label"><span>Physics</span><span>80%</span></div>
+          <div class="prog-track"><div class="prog-fill prog-sky" style="width:80%"></div></div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-label"><span>Chemistry</span><span>75%</span></div>
+          <div class="prog-track"><div class="prog-fill prog-emerald" style="width:75%"></div></div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-label"><span>English</span><span>95%</span></div>
+          <div class="prog-track"><div class="prog-fill prog-amber" style="width:95%"></div></div>
+        </div>
+        <div class="prog-wrap" style="margin-bottom:0">
+          <div class="prog-label"><span>Computer Science</span><span>88%</span></div>
+          <div class="prog-track"><div class="prog-fill prog-rose" style="width:88%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-box">
+      <div class="section-box-header">Recent Records <span class="sub">Last 7 days</span></div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Date</th><th>Subject</th><th>Status</th><th>Remark</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>May 11, 2026</td><td>Mathematics</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+          <tr><td>May 11, 2026</td><td>Physics</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+          <tr><td>May 10, 2026</td><td>Chemistry</td><td><span class="badge badge-red">Absent</span></td><td>Sick leave</td></tr>
+          <tr><td>May 10, 2026</td><td>English</td><td><span class="badge badge-yellow">Late</span></td><td>15 min delay</td></tr>
+          <tr><td>May 09, 2026</td><td>Mathematics</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+          <tr><td>May 09, 2026</td><td>Computer Science</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+          <tr><td>May 08, 2026</td><td>Physics</td><td><span class="badge badge-red">Absent</span></td><td>Family event</td></tr>
+        </tbody>
+      </table>
+    </div>
+    </div><!-- /tab-panel attendance-overview -->
+
+    <!-- Tab: Records -->
+    <div class="tab-panel" id="attendance-records">
+      <div class="section-box">
+        <div class="section-box-header">Full Attendance Log <span class="sub">All entries</span></div>
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Subject</th><th>Status</th><th>Remark</th></tr></thead>
+          <tbody>
+            <tr><td>May 11</td><td>Mathematics</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+            <tr><td>May 11</td><td>Physics</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+            <tr><td>May 10</td><td>Chemistry</td><td><span class="badge badge-red">Absent</span></td><td>Sick leave</td></tr>
+            <tr><td>May 10</td><td>English</td><td><span class="badge badge-yellow">Late</span></td><td>15 min delay</td></tr>
+            <tr><td>May 09</td><td>Mathematics</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+            <tr><td>May 09</td><td>CS</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+            <tr><td>May 08</td><td>Physics</td><td><span class="badge badge-red">Absent</span></td><td>Family event</td></tr>
+            <tr><td>May 07</td><td>Chemistry</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+            <tr><td>May 06</td><td>English</td><td><span class="badge badge-green">Present</span></td><td>—</td></tr>
+            <tr><td>May 05</td><td>Mathematics</td><td><span class="badge badge-yellow">Late</span></td><td>Bus delay</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /tab-panel attendance-records -->
+
+    <!-- Tab: By Subject -->
+    <div class="tab-panel" id="attendance-subjects">
+      <div class="section-box">
+        <div class="section-box-header">Subject-wise Summary <span class="sub">May 2026</span></div>
+        <table class="data-table">
+          <thead><tr><th>Subject</th><th>Present</th><th>Absent</th><th>Late</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr><td>Mathematics</td><td>11</td><td>0</td><td>1</td><td><span class="badge badge-green">92%</span></td></tr>
+            <tr><td>Physics</td><td>9</td><td>2</td><td>0</td><td><span class="badge badge-yellow">80%</span></td></tr>
+            <tr><td>Chemistry</td><td>8</td><td>2</td><td>1</td><td><span class="badge badge-yellow">75%</span></td></tr>
+            <tr><td>English</td><td>11</td><td>0</td><td>0</td><td><span class="badge badge-green">95%</span></td></tr>
+            <tr><td>Computer Science</td><td>10</td><td>1</td><td>0</td><td><span class="badge badge-green">88%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /tab-panel attendance-subjects -->
+
+    <!-- Tab: Report -->
+    <div class="tab-panel" id="attendance-report">
+      <div class="section-box">
+        <div class="section-box-header">Monthly Report <span class="sub">May 2026</span></div>
+        <div style="padding:22px;">
+          <div class="prog-wrap"><div class="prog-label"><span>Overall Attendance</span><span>85%</span></div><div class="prog-track"><div class="prog-fill prog-violet" style="width:85%"></div></div></div>
+          <div class="prog-wrap"><div class="prog-label"><span>Minimum Required (75%)</span><span style="color:#10b981">✓ Above threshold</span></div><div class="prog-track"><div class="prog-fill prog-emerald" style="width:75%"></div></div></div>
+          <div style="margin-top:18px;display:flex;gap:16px;flex-wrap:wrap;">
+            <div class="sum-chip"><span class="s-val" style="color:#7c3aed">20</span><span class="s-lbl">Total Classes</span></div>
+            <div class="sum-chip"><span class="s-val" style="color:#10b981">17</span><span class="s-lbl">Attended</span></div>
+            <div class="sum-chip"><span class="s-val" style="color:#ef4444">3</span><span class="s-lbl">Missed</span></div>
+            <div class="sum-chip"><span class="s-val" style="color:#f59e0b">5</span><span class="s-lbl">Allowed Absences Left</span></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /tab-panel attendance-report -->
+
+  </div>
+</div>
+
+
+<!-- ABOUT MODAL -->
+
+<div class="about-overlay" id="aboutOverlay">
+
+  <div class="about-modal">
+
+    <!-- CLOSE -->
+
+    <button class="about-close" onclick="closeAboutModal()">
+      ✕
+    </button>
+
+    <!-- HEADER -->
+
+    <div class="about-header">
+
+      <div class="about-badge">
+        About-StudySync
+      </div>
+
+      <h2>
+        Your Academic Life, Finally Organized.
+      </h2>
+
+      <p>
+        Attendance, assignments, notes, deadlines —
+        everything in one clean and stress-free workspace.
+      </p>
+
+    </div>
+    <!-- =========================================
+              TAB BUTTON
+          ========================================= -->
+<div class="info-tabs">
+
+  <button class="info-tab active"
+    onclick="switchInfoTab('about', this)">
+
+    About
+
+</button>
+
+<button class="info-tab"
+  onclick="switchInfoTab('works', this)">
+
+  How It Works
+
+</button>
+
+</div>
+    <!-- CONTENT -->
+
+    <div class="info-page active" id="aboutPage">
+
+      <div class="about-section-title">
+        PLATFORM OVERVIEW
+      </div>
+
+      <div class="about-content">
+
+      <!-- LEFT -->
+
+       <div class="about-left">
+
+        <div class="about-card">
+
+          <h3>📘 What is StudySync?</h3>
+
+          <p>
+            StudySync is a student-focused productivity and collaboration platform
+            designed to simplify academic life.
+          </p>
+
+          <p>
+            From managing study schedules and organizing coursework to collaborating
+            with peers and tracking progress, StudySync brings essential academic
+            tools together into one streamlined workspace.
+          </p>
+
+          <p>
+            Our goal is to help students stay focused, reduce academic stress,
+            and build more consistent learning habits through a clean and intuitive experience.
+          </p>
+
+        </div>
+
+        <div class="about-card">
+
+          <h3>🎯 Why Students Love It</h3>
+
+          <p>
+            Built to make student life simpler,
+            faster, and way less chaotic.
+            Study smarter, stay organized,
+            and never miss what matters.
+          </p>
+
+           <p>
+            Instead of switching between multiple apps and scattered notes,
+            StudySync provides a centralized environment where students can
+            plan tasks, manage deadlines, and collaborate efficiently.
+          </p>
+
+        </div>
+
+      </div>
+      <!-- RIGHT -->
+
+      <div class="about-right">
+         <div class="about-section-title no-line">
+          STUDENT EXPERIENCE
+        </div>
+
+        <div class="feature-box">
+          <span>📊</span>
+          Smart Dashboard
+        </div>
+
+        <div class="feature-box">
+          <span>✅</span>
+          Attendance Tracking
+        </div>
+
+        <div class="feature-box">
+          <span>📝</span>
+          Assignment Manager
+        </div>
+
+        <div class="feature-box">
+          <span>📚</span>
+          Notes Organizer
+        </div>
+
+        <div class="feature-box">
+          <span>📅</span>
+          Academic Calendar
+        </div>
+
+        <div class="feature-box">
+          <span>⏱</span>
+          Study Planner
+        </div>
+
+        <div class="feature-box">
+          <span>🔔</span>
+          Smart Alerts
+        </div>
+
+        <div class="about-mini-quote">
+
+          “Built for students who say
+          ‘I’ll start studying tomorrow’ every day.”
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <div class="about-footer">
+
+      StudySync — Learn Smarter. Stress Less. 🚀
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================================
+     HOW IT WORKS PAGE
+========================================= -->
+
+<div class="info-page" id="worksPage" style="display:none;">
+
+  <!-- HERO -->
+
+  <div class="journey-header">
+
+    <h1>Your StudySync Journey</h1>
+
+    <p>
+      Discover how StudySync helps students stay organized,
+      productive, and academically focused through a smarter
+      academic workflow.
+    </p>
+
+  </div>
+
+
+
+  <!-- TIMELINE -->
+
+  <div class="journey-container">
+
+
+    <!-- STEP 1 -->
+
+    <div class="journey-item featured">
+
+      <div class="journey-number">
+        01
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <div>
+
+            <span class="journey-badge">
+              START HERE
+            </span>
+
+            <h2>Create Your Account</h2>
+
+          </div>
+
+          <span class="journey-icon">👤</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Create your personalized StudySync workspace
+            and access all academic productivity tools
+            from one centralized platform.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 2 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        02
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Complete Your Setup</h2>
+
+          <span class="journey-icon">⚙️</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Add subjects, schedules, semester details,
+            and personalize your dashboard experience.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 3 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        03
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Track Attendance</h2>
+
+          <span class="journey-icon">✅</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Monitor attendance percentages, maintain records,
+            and stay updated with academic requirements.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 4 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        04
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Manage Assignments</h2>
+
+          <span class="journey-icon">📝</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Organize coursework, deadlines,
+            and assignment submissions efficiently.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 5 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        05
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Organize Notes</h2>
+
+          <span class="journey-icon">📚</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Keep class notes structured and accessible
+            for revision and collaborative learning.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 6 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        06
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Plan Study Sessions</h2>
+
+          <span class="journey-icon">🧠</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Build productive study schedules and maintain
+            focus through smart planning tools.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 7 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        07
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Stay Synced with Calendar</h2>
+
+          <span class="journey-icon">📅</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Track exams, events, submissions,
+            and academic milestones using the calendar.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 8 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        08
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Achieve Better Productivity</h2>
+
+          <span class="journey-icon">⭐</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Stay consistent, reduce stress,
+            and improve your academic workflow daily.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+      <script src="attendance.js"></script>
+
+</body>
+</html>

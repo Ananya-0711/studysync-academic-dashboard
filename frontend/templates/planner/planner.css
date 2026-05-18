@@ -336,99 +336,6 @@ body {
 }
 
 
-/* ================= DARK MODE ================= */
-
-body.dark-mode{
-  background:#0f172a;
-  color:#f8fafc;
-}
-
-/* NAVBAR */
-
-body.dark-mode .navbar{
-  background:#111827;
-  border-bottom:1px solid #1e293b;
-}
-
-body.dark-mode .logo-text{
-  color: var(--purple);
-}
-
-/* LINKS */
-
-body.dark-mode .nav-links a{
-  color:#cbd5e1;
-}
-
-body.dark-mode .nav-links a.active{
-  background:#312e81;
-  color:#c4b5fd;
-}
-
-/* CARDS */
-
-body.dark-mode .section-box,
-body.dark-mode .sum-chip{
-    background:#1e293b;
-
-    border-color:#334155;
-}
-body.dark-mode .stat-chip,
-body.dark-mode .profile-dropdown{
-  background:#1e293b;
-
-  border-color:#334155;
-}
-
-/* TEXT */
-
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4{
-  color:white;
-}
-
-body.dark-mode p,
-body.dark-mode span,
-body.dark-mode td,
-body.dark-mode th,
-body.dark-mode a{
-  color:#cbd5e1;
-}
-
-/* TABLE */
-
-body.dark-mode .data-table th{
-  background:#111827;
-}
-
-body.dark-mode .data-table td{
-  border-color:#334155;
-}
-
-/* BUTTONS */
-
-body.dark-mode button{
-  color:white;
-}
-
-/* PROFILE BUTTONS */
-
-body.dark-mode .theme-buttons button{
-  background:#273449;
-  border-color:#334155;
-}
-
-/* INPUTS */
-
-body.dark-mode input{
-  background:#111827;
-  border-color:#334155;
-  color:white;
-}
-
-
     /* ── Inner pages shared layout ── */
     .inner-page {
       max-width: 900px;
@@ -602,190 +509,176 @@ body.dark-mode input{
     @media (max-width: 580px) {
       .inner-page { padding: 24px 14px 48px; }
     }
-/*DARK THEME*/
+/* ================= DARK MODE ================= */
 
-/* TABLE TEXT */
-
-body.dark-mode .data-table td{
-    color:#e2e8f0;
-}
-
-body.dark-mode .data-table th{
-    color:#94a3b8;
-    background:#111827;
-}
-
-/* SMALL MUTED TEXT */
-
-body.dark-mode .sub{
-    color:#94a3b8;
+body.dark-mode{
+  background:#0f172a;
+  color:#f8fafc;
 }
 
 /* NAVBAR */
 
 body.dark-mode .navbar{
-    background:#111827;
-    border-bottom:1px solid #1e293b;
+  background:#111827;
+  border-bottom:1px solid #1e293b;
+}
+
+body.dark-mode .logo-text{
+  color:var(--purple);
 }
 
 /* NAV LINKS */
 
 body.dark-mode .nav-links a{
-    color:#cbd5e1;
+  color:#cbd5e1;
 }
 
 body.dark-mode .nav-links a:hover{
-    background:#1e293b;
-    color:white;
+  background:#1e293b;
+  color:white;
 }
 
 body.dark-mode .nav-links a.active{
-    background:#312e81;
-    color:#c4b5fd;
+  background:#312e81;
+  color:#c4b5fd;
+}
+
+/* SECTION BOXES */
+
+body.dark-mode .section-box,
+body.dark-mode .sum-chip,
+body.dark-mode .stat-chip,
+body.dark-mode .profile-dropdown{
+  background:#1e293b;
+  border-color:#334155;
+}
+
+/* HEADINGS */
+
+body.dark-mode .page-header-text h1,
+body.dark-mode .section-box-header,
+body.dark-mode .profile-header h3,
+body.dark-mode .schedule-info h4{
+  color:#f8fafc;
+}
+
+/* NORMAL TEXT */
+
+body.dark-mode .profile-header p,
+body.dark-mode .page-header-text p,
+body.dark-mode .prog-label,
+body.dark-mode .s-lbl,
+body.dark-mode .sub,
+body.dark-mode .schedule-info p,
+body.dark-mode .schedule-time{
+  color:#cbd5e1;
+}
+
+/* TABLE */
+
+body.dark-mode .data-table th{
+  background:#111827;
+  color:#94a3b8;
+}
+
+body.dark-mode .data-table td{
+  color:#e2e8f0;
+  border-color:#334155;
+}
+
+body.dark-mode .data-table tr:hover td{
+  background:#273449;
+}
+
+/* PAGE TABS */
+
+body.dark-mode .page-tab{
+  color:#cbd5e1;
+}
+
+body.dark-mode .page-tab:hover{
+  background:#273449;
+  color:white;
+}
+
+/* PROGRESS */
+
+body.dark-mode .prog-track{
+  background:#334155;
 }
 
 /* DROPDOWN */
 
-body.dark-mode .profile-dropdown{
-    background:#1e293b;
-}
-
 body.dark-mode .dropdown-option{
-    color:#e2e8f0;
+  color:#f8fafc;
 }
 
 body.dark-mode .dropdown-option:hover{
-    color:#c4b5fd;
+  color:#c4b5fd;
 }
 
-/* CARDS */
+body.dark-mode .dropdown-option i{
+  color:#ffffff;
+}
 
-body.dark-mode .section-box,
-body.dark-mode .sum-chip{
-    background:#1e293b;
-    border-color:#334155;
+body.dark-mode .theme-title{
+  color:#f8fafc;
+}
+
+body.dark-mode .theme-buttons button{
+  background:#273449;
+  border-color:#334155;
+  color:white;
 }
 
 /* INPUTS */
 
 body.dark-mode input{
-    background:#111827;
-    border-color:#334155;
-    color:white;
-}
-
-/* THEME BUTTONS */
-
-body.dark-mode .theme-buttons button{
-    background:#273449;
-    border-color:#334155;
-    color:white;
-}
-
-/* DROPDOWN TEXT FIX */
-
-body.dark-mode .theme-title{
-    color:#f8fafc;
-}
-
-body.dark-mode .dropdown-option{
-    color:#f8fafc;
-}
-
-body.dark-mode .dropdown-option i{
-    color:#ffffff;
-}
-
-/* LOGOUT SAME COLOR */
-
-body.dark-mode .logout{
-    color:red;
-}
-
-body.dark-mode .logout i{
-    color:red;
-}
-/* ================= FINAL DARK MODE FIX ================= */
-
-/* PAGE TABS */
-
-body.dark-mode .page-tab{
-    color:white;
-}
-
-body.dark-mode .page-tab:hover{
-    background:#273449;
-    color:white;
-}
-
-/* SUMMARY CHIPS */
-
-body.dark-mode .sum-chip{
-    background:#1e293b;
-    border-color:#334155;
-}
-
-
-body.dark-mode .sum-chip .s-lbl{
-    color:#cbd5e1;
-}
-
-
-/* SCHEDULE */
-
-body.dark-mode .schedule-info h4{
-    color:#ffffff;
-}
-
-body.dark-mode .schedule-info p,
-body.dark-mode .schedule-time{
-    color:#cbd5e1;
-}
-
-/* TABLE ROW HOVER */
-
-body.dark-mode .data-table tr:hover td{
-    background:#273449;
+  background:#111827;
+  border-color:#334155;
+  color:white;
 }
 
 /* SECTION HEADER */
 
 body.dark-mode .section-box-header{
-    border-bottom:1px solid #334155;
+  background:#111827;
+  color:#c4b5fd !important;
+  border-bottom:1px solid #334155;
 }
 
-/* PROGRESS TRACK */
-
-body.dark-mode .prog-track{
-    background:#334155;
-}
-
-
-/* STATUS BADGES DARK MODE */
+/* STATUS BADGES */
 
 body.dark-mode .badge-green{
-    background:#14532d;
-    color:#bbf7d0;
+  background:#14532d;
+  color:#bbf7d0;
 }
 
 body.dark-mode .badge-red{
-    background:#7f1d1d;
-    color:#fecaca;
+  background:#7f1d1d;
+  color:#fecaca;
 }
 
 body.dark-mode .badge-yellow{
-    background:#78350f;
-    color:#fde68a;
+  background:#78350f;
+  color:#fde68a;
 }
 
 body.dark-mode .badge-blue{
-    background:#1e3a8a;
-    color:#bfdbfe;
+  background:#1e3a8a;
+  color:#bfdbfe;
 }
 
 body.dark-mode .badge-gray{
-    background:#374151;
-    color:#f3f4f6;
+  background:#374151;
+  color:#f3f4f6;
+}
+
+/* LOGOUT */
+
+body.dark-mode .logout,
+body.dark-mode .logout i{
+  color:red;
 }
 
 
