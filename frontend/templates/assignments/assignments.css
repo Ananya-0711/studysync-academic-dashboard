@@ -653,6 +653,7 @@ body.dark-mode .logout i{
 }
 
 
+
 /* ═══════════════════════════════════════
    STUDYSYNC INFO MODAL
    ABOUT + HOW IT WORKS + HELP CENTER
@@ -1034,13 +1035,11 @@ body.dark-mode .about-card{
 }
 
 
-
 body.dark-mode .about-card h2,
 body.dark-mode .about-card h3{
 
   color: var(--about-text);
 }
-
 
 
 body.dark-mode .about-card p{
@@ -1140,7 +1139,6 @@ body.dark-mode .about-card p{
 }
 
 
-
 /* =========================================
    HEADER
 ========================================= */
@@ -1163,7 +1161,6 @@ body.dark-mode .about-card p{
   line-height: 1.8;
   font-size: 1rem;
 }
-
 
 
 /* =========================================
@@ -1199,7 +1196,6 @@ body.dark-mode .about-card p{
 }
 
 
-
 /* =========================================
    EACH STEP
 ========================================= */
@@ -1212,7 +1208,6 @@ body.dark-mode .about-card p{
 
   gap: 18px;
 }
-
 
 
 /* =========================================
@@ -1245,7 +1240,6 @@ body.dark-mode .about-card p{
 }
 
 
-
 /* =========================================
    FEATURED FIRST STEP
 ========================================= */
@@ -1261,7 +1255,6 @@ body.dark-mode .about-card p{
 
   color: white;
 }
-
 
 
 /* =========================================
@@ -1287,7 +1280,6 @@ body.dark-mode .about-card p{
 .journey-card:hover{
   transform: translateY(-3px);
 }
-
 
 
 /* =========================================
@@ -1318,7 +1310,6 @@ body.dark-mode .about-card p{
 }
 
 
-
 /* =========================================
    ICON
 ========================================= */
@@ -1326,7 +1317,6 @@ body.dark-mode .about-card p{
 .journey-icon{
   font-size: 1.1rem;
 }
-
 
 
 /* =========================================
@@ -1345,7 +1335,6 @@ body.dark-mode .about-card p{
   font-weight: 500;
   margin: 0;
 }
-
 
 
 /* =========================================
@@ -1372,7 +1361,6 @@ body.dark-mode .about-card p{
 
   letter-spacing: 1px;
 }
-
 
 
 /* =========================================
