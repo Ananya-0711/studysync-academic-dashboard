@@ -38,7 +38,6 @@ if(profileBtn && profileDropdown){
 }
 
 
-
 /* ═══════════════════════════════════════
    PAGE TABS
 ═══════════════════════════════════════ */
@@ -90,7 +89,6 @@ if(bellBtn){
   });
 
 }
-
 
 
 /* ═══════════════════════════════════════
@@ -175,7 +173,6 @@ function closeAboutModal(){
 }
 
 
-
 /* CLOSE ON OUTSIDE CLICK */
 
 window.addEventListener("click",(e)=>{
@@ -192,7 +189,6 @@ window.addEventListener("click",(e)=>{
 });
 
 
-
 /* CLOSE ON ESC */
 
 document.addEventListener("keydown",(e)=>{
@@ -204,7 +200,6 @@ document.addEventListener("keydown",(e)=>{
   }
 
 });
-
 
 
 /* ═══════════════════════════════════════

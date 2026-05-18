@@ -139,57 +139,57 @@ body {
 
 /* RIGHT */
 
-    .nav-right {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+.nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
 /* NOTIFICATION */
 
 .notification-box{
-    position:relative;
+  position:relative;
 
-    width:42px;
-    height:42px;
+  width:42px;
+  height:42px;
 
-    border-radius:50%;
+  border-radius:50%;
 
-    background:#f4efff;
+  background:#f4efff;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 
-    cursor:pointer;
+  cursor:pointer;
 }
 
 .notification-box i{
-    color:#6d28d9;
-    font-size:20px;
+  color:#6d28d9;
+  font-size:20px;
 }
 
 .notification-count{
-    position:absolute;
+  position:absolute;
 
-    top:-5px;
-    right:-2px;
+  top:-5px;
+  right:-2px;
 
-    width:22px;
-    height:22px;
+  width:22px;
+  height:22px;
 
-    border-radius:50%;
+  border-radius:50%;
 
-    background:#ef4444;
-    color:white;
+  background:#ef4444;
+  color:white;
 
-    font-size:12px;
-    font-weight:700;
+  font-size:12px;
+  font-weight:700;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 /* PROFILE */
@@ -199,99 +199,99 @@ body {
 }
 
 .profile-btn{
-    width:42px;
-    height:42px;
+  width:42px;
+  height:42px;
 
-    border:none;
-    border-radius:50%;
+  border:none;
+  border-radius:50%;
 
-    background:linear-gradient(
-        135deg,
-        #7c3aed,
-        #4f46e5
-    );
+  background:linear-gradient(
+      135deg,
+      #7c3aed,
+      #4f46e5
+  );
 
-    color:white;
+  color:white;
 
-    font-size:18px;
-    font-weight:700;
+  font-size:18px;
+  font-weight:700;
 
-    cursor:pointer;
+  cursor:pointer;
 
-    box-shadow:
-        0 6px 18px rgba(124,58,237,0.3);
+  box-shadow:
+      0 6px 18px rgba(124,58,237,0.3);
 }
 
 /* DROPDOWN */
 
 .profile-dropdown{
-    position:absolute;
+  position:absolute;
 
-    top:58px;
-    right:0;
+  top:58px;
+  right:0;
 
-    width:310px;
+  width:310px;
 
-    background:white;
+  background:white;
 
-    border-radius:20px;
+  border-radius:20px;
 
-    padding:22px;
+  padding:22px;
 
-    z-index:1000;
+  z-index:1000;
 
-    display:none;
+  display:none;
 
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.08);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
 }
 
 /* HEADER */
 
 .profile-header h3{
-    font-size:18px;
-    color:#1f2937;
+  font-size:18px;
+  color:#1f2937;
 }
 
 .profile-header p{
-    margin-top:6px;
+  margin-top:6px;
 
-    color:#6b7280;
-    font-size:14px;
+  color:#6b7280;
+  font-size:14px;
 }
 
 /* LINES */
 
 .profile-dropdown hr{
-    border:none;
+  border:none;
 
-    border-top:1px solid #ececec;
+  border-top:1px solid #ececec;
 
-    margin:18px 0;
+  margin:18px 0;
 }
 
 /* OPTIONS */
 
 .dropdown-option{
-    padding:12px 0;
+  padding:12px 0;
 
-    display:flex;
-    align-items:center;
-    gap:14px;
+  display:flex;
+  align-items:center;
+  gap:14px;
 
-    color:#374151;
+  color:#374151;
 
-    cursor:pointer;
+  cursor:pointer;
 
-    transition:0.2s;
+  transition:0.2s;
 }
 
 .dropdown-option:hover{
-    color:#6d28d9;
+  color:#6d28d9;
 }
 
 .logout{
-    color:#ef4444;
+  color: #ef4444;
 }
 
 /* THEME */
