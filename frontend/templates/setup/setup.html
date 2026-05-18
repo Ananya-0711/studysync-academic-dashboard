@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudySync - Setup Workspace</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+  <link rel="stylesheet" href="setup.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════ -->
+  <nav class="navbar">
+
+    <!-- Left -->
+    <div class="nav-left">
+
+      <!-- Logo -->
+      <a href="#" class="logo" onclick="event.preventDefault(); openAboutModal();">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/>
+            <path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/>
+          </svg>
+        </div>
+        <span class="logo-text">StudySync</span>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <!-- Nav Links -->
+      <ul class="nav-links">
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Home
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Dashboard
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Attendance
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Assignments
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Study Planner
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Notes
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Calendar
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <!-- Right -->
+    <div class="nav-right">
+
+      <!-- Bell -->
+        <div class="notification-box">
+
+            <i class="fa-regular fa-bell"></i>
+
+            <span class="notification-count">
+                1
+            </span>
+
+        </div>
+
+        <!-- PROFILE -->
+
+        <div class="profile-container">
+
+            <button class="profile-btn"
+                id="profileBtn">
+                    S
+            </button>
+
+            <!-- DROPDOWN -->
+
+            <div class="profile-dropdown"
+                id="profileDropdown">
+
+                <!-- HEADER -->
+
+                <div class="profile-header">
+
+                    <h3>
+                        Student Profile
+                    </h3>
+
+                    <p>
+                        student@studysync.com
+                    </p>
+
+                </div>
+
+                <!-- OPTIONS -->
+
+                <div class="dropdown-option">
+
+                    <i class="fa-solid fa-code"></i>
+
+                    Current Build
+
+                </div>
+
+                <div class="dropdown-option">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    Joined Workspace
+
+                </div>
+
+                <div class="dropdown-option">
+
+                    <i class="fa-solid fa-repeat"></i>
+
+                    Switch Workspace
+
+                </div>
+
+                <div class="dropdown-option">
+                    <i class="fa-solid fa-gear"></i>
+                        Settings
+                </div>
+
+                <hr>
+
+                    <!-- APPEARANCE -->
+
+                    <div class="theme-title">
+
+                        Appearance Mode
+
+                    </div>
+
+                    <div class="theme-buttons">
+
+                      <button id="lightMode">
+                        Light
+                      </button>
+
+                      <button id="darkMode">
+                        Dark
+                      </button>
+
+                    </div>
+
+                <hr>
+
+                    <!-- LOGOUT -->
+
+                    <div class="dropdown-option logout">
+
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                        Logout
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════ -->
+  <main class="page-wrapper">
+
+    <!-- ── PAGE TITLE ── -->
+    <div class="page-hero">
+      <div class="page-hero-text">
+        <h1 class="page-title">Semester Setup</h1>
+        <p class="page-subtitle">Configure your subjects and timetable</p>
+      </div>
+      <div class="page-hero-meta">
+        <span class="semester-tag">
+          <i class="fa-solid fa-graduation-cap"></i>
+          II Year II Semester
+        </span>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SECTION 1 — SUBJECTS
+    ═══════════════════════════════════════ -->
+    <section class="content-section">
+
+      <div class="section-header">
+        <div class="section-header-left">
+          <h2 class="section-title">
+            <span class="section-icon">📚</span>
+            Subjects
+          </h2>
+          <span class="section-count" id="subjectCount">4 subjects</span>
+        </div>
+        <button class="btn-primary" id="addSubjectBtn">
+          <i class="fa-solid fa-plus"></i>
+          Add Subject
+        </button>
+      </div>
+
+      <!-- Subject Cards Grid -->
+      <div class="subjects-grid" id="subjectsGrid">
+
+        <!-- Card 1 -->
+        <div class="subject-card" style="--card-accent: #7C3AED;">
+          <div class="subject-card-left">
+            <div class="subject-initial" style="background: #EDE9FE; color: #7C3AED;">DS</div>
+            <div class="subject-info">
+              <span class="subject-name">Data Structures</span>
+              <span class="subject-code">CS201</span>
+            </div>
+          </div>
+          <div class="subject-card-right">
+            <span class="credits-badge">4 Credits</span>
+            <div class="card-actions">
+              <button class="action-btn edit-btn" title="Edit">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button class="action-btn delete-btn" title="Delete">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="subject-card" style="--card-accent: #4F46E5;">
+          <div class="subject-card-left">
+            <div class="subject-initial" style="background: #E0E7FF; color: #4F46E5;">DB</div>
+            <div class="subject-info">
+              <span class="subject-name">Database Management</span>
+              <span class="subject-code">CS202</span>
+            </div>
+          </div>
+          <div class="subject-card-right">
+            <span class="credits-badge">3 Credits</span>
+            <div class="card-actions">
+              <button class="action-btn edit-btn" title="Edit">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button class="action-btn delete-btn" title="Delete">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="subject-card" style="--card-accent: #0EA5E9;">
+          <div class="subject-card-left">
+            <div class="subject-initial" style="background: #E0F2FE; color: #0EA5E9;">WD</div>
+            <div class="subject-info">
+              <span class="subject-name">Web Development</span>
+              <span class="subject-code">CS203</span>
+            </div>
+          </div>
+          <div class="subject-card-right">
+            <span class="credits-badge">3 Credits</span>
+            <div class="card-actions">
+              <button class="action-btn edit-btn" title="Edit">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button class="action-btn delete-btn" title="Delete">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="subject-card" style="--card-accent: #059669;">
+          <div class="subject-card-left">
+            <div class="subject-initial" style="background: #D1FAE5; color: #059669;">OS</div>
+            <div class="subject-info">
+              <span class="subject-name">Operating Systems</span>
+              <span class="subject-code">CS204</span>
+            </div>
+          </div>
+          <div class="subject-card-right">
+            <span class="credits-badge">4 Credits</span>
+            <div class="card-actions">
+              <button class="action-btn edit-btn" title="Edit">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button class="action-btn delete-btn" title="Delete">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SECTION 2 — TIMETABLE
+    ═══════════════════════════════════════ -->
+    <section class="content-section">
+
+      <div class="section-header">
+        <div class="section-header-left">
+          <h2 class="section-title">
+            <span class="section-icon">🗓️</span>
+            Timetable
+          </h2>
+          <span class="section-count">Weekly schedule</span>
+        </div>
+        <button class="btn-primary" id="addSlotBtn">
+          <i class="fa-solid fa-plus"></i>
+          Add Slot
+        </button>
+      </div>
+
+      <!-- Day Cards -->
+      <div class="timetable-list">
+
+        <!-- Monday -->
+        <div class="day-card">
+          <div class="day-label">
+            <span class="day-name">Monday</span>
+            <span class="day-count">2 classes</span>
+          </div>
+          <div class="day-slots">
+            <div class="slot" style="--slot-color: #7C3AED; --slot-bg: #EDE9FE;">
+              <span class="slot-time">09:00</span>
+              <span class="slot-divider"></span>
+              <span class="slot-subject">Data Structures</span>
+              <span class="slot-code">CS201</span>
+            </div>
+            <div class="slot" style="--slot-color: #4F46E5; --slot-bg: #E0E7FF;">
+              <span class="slot-time">14:00</span>
+              <span class="slot-divider"></span>
+              <span class="slot-subject">Database Management</span>
+              <span class="slot-code">CS202</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tuesday -->
+        <div class="day-card">
+          <div class="day-label">
+            <span class="day-name">Tuesday</span>
+            <span class="day-count">1 class</span>
+          </div>
+          <div class="day-slots">
+            <div class="slot" style="--slot-color: #0EA5E9; --slot-bg: #E0F2FE;">
+              <span class="slot-time">10:00</span>
+              <span class="slot-divider"></span>
+              <span class="slot-subject">Web Development</span>
+              <span class="slot-code">CS203</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wednesday -->
+        <div class="day-card">
+          <div class="day-label">
+            <span class="day-name">Wednesday</span>
+            <span class="day-count">1 class</span>
+          </div>
+          <div class="day-slots">
+            <div class="slot" style="--slot-color: #059669; --slot-bg: #D1FAE5;">
+              <span class="slot-time">09:00</span>
+              <span class="slot-divider"></span>
+              <span class="slot-subject">Operating Systems</span>
+              <span class="slot-code">CS204</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thursday -->
+        <div class="day-card">
+          <div class="day-label">
+            <span class="day-name">Thursday</span>
+            <span class="day-count">2 classes</span>
+          </div>
+          <div class="day-slots">
+            <div class="slot" style="--slot-color: #7C3AED; --slot-bg: #EDE9FE;">
+              <span class="slot-time">11:00</span>
+              <span class="slot-divider"></span>
+              <span class="slot-subject">Data Structures</span>
+              <span class="slot-code">CS201</span>
+            </div>
+            <div class="slot" style="--slot-color: #0EA5E9; --slot-bg: #E0F2FE;">
+              <span class="slot-time">15:00</span>
+              <span class="slot-divider"></span>
+              <span class="slot-subject">Web Development</span>
+              <span class="slot-code">CS203</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Friday -->
+        <div class="day-card">
+          <div class="day-label">
+            <span class="day-name">Friday</span>
+            <span class="day-count">1 class</span>
+          </div>
+          <div class="day-slots">
+            <div class="slot" style="--slot-color: #4F46E5; --slot-bg: #E0E7FF;">
+              <span class="slot-time">10:00</span>
+              <span class="slot-divider"></span>
+              <span class="slot-subject">Database Management</span>
+              <span class="slot-code">CS202</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Saturday — Empty state -->
+        <div class="day-card">
+          <div class="day-label">
+            <span class="day-name">Saturday</span>
+            <span class="day-count">No classes</span>
+          </div>
+          <div class="day-slots">
+            <div class="empty-slot">
+              <i class="fa-regular fa-calendar-xmark"></i>
+              No classes scheduled
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SAVE BUTTON ── -->
+    <div class="save-row">
+      <button class="btn-save">
+        <i class="fa-solid fa-floppy-disk"></i>
+        Save Semester Setup
+      </button>
+    </div>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════
+       ADD SUBJECT MODAL
+  ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="subjectModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add New Subject</h3>
+        <button class="modal-close" id="closeSubjectModal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Subject Name</label>
+          <input type="text" id="subjectNameInput" placeholder="e.g. Data Structures" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Subject Code</label>
+            <input type="text" id="subjectCodeInput" placeholder="e.g. CS201" />
+          </div>
+          <div class="form-group">
+            <label>Credits</label>
+            <input type="number" id="subjectCreditsInput" placeholder="e.g. 4" min="1" max="6" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="cancelSubjectModal">Cancel</button>
+        <button class="btn-primary" id="saveSubjectBtn">
+          <i class="fa-solid fa-plus"></i>
+          Add Subject
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       ADD SLOT MODAL
+  ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="slotModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add Timetable Slot</h3>
+        <button class="modal-close" id="closeSlotModal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Day</label>
+            <select id="slotDayInput">
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <input type="time" id="slotTimeInput" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select id="slotSubjectInput">
+            <option value="">Select a subject</option>
+            <option value="Data Structures|CS201|#7C3AED|#EDE9FE">Data Structures (CS201)</option>
+            <option value="Database Management|CS202|#4F46E5|#E0E7FF">Database Management (CS202)</option>
+            <option value="Web Development|CS203|#0EA5E9|#E0F2FE">Web Development (CS203)</option>
+            <option value="Operating Systems|CS204|#059669|#D1FAE5">Operating Systems (CS204)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="cancelSlotModal">Cancel</button>
+        <button class="btn-primary" id="saveSlotBtn">
+          <i class="fa-solid fa-plus"></i>
+          Add Slot
+        </button>
+      </div>
+    </div>
+  </div>
+
+    <!-- ABOUT MODAL -->
+
+  <div class="about-overlay" id="aboutOverlay">
+
+    <div class="about-modal">
+
+      <!-- CLOSE -->
+
+      <button class="about-close" onclick="closeAboutModal()">
+        ✕
+      </button>
+
+      <!-- HEADER -->
+
+      <div class="about-header">
+
+        <div class="about-badge">
+          About-StudySync
+        </div>
+
+        <h2>
+          Your Academic Life, Finally Organized.
+        </h2>
+
+        <p>
+          Attendance, assignments, notes, deadlines —
+          everything in one clean and stress-free workspace.
+        </p>
+
+      </div>
+      <!-- =========================================
+                TAB BUTTON
+            ========================================= -->
+  <div class="info-tabs">
+
+    <button class="info-tab active"
+      onclick="switchInfoTab('about', this)">
+
+      About
+
+  </button>
+
+  <button class="info-tab"
+    onclick="switchInfoTab('works', this)">
+
+    How It Works
+
+  </button>
+
+  </div>
+      <!-- CONTENT -->
+
+      <div class="info-page active" id="aboutPage">
+
+        <div class="about-section-title">
+          PLATFORM OVERVIEW
+        </div>
+
+        <div class="about-content">
+
+        <!-- LEFT -->
+
+        <div class="about-left">
+
+          <div class="about-card">
+
+            <h3>📘 What is StudySync?</h3>
+
+            <p>
+              StudySync is a student-focused productivity and collaboration platform
+              designed to simplify academic life.
+            </p>
+
+            <p>
+              From managing study schedules and organizing coursework to collaborating
+              with peers and tracking progress, StudySync brings essential academic
+              tools together into one streamlined workspace.
+            </p>
+
+            <p>
+              Our goal is to help students stay focused, reduce academic stress,
+              and build more consistent learning habits through a clean and intuitive experience.
+            </p>
+
+          </div>
+
+          <div class="about-card">
+
+            <h3>🎯 Why Students Love It</h3>
+
+            <p>
+              Built to make student life simpler,
+              faster, and way less chaotic.
+              Study smarter, stay organized,
+              and never miss what matters.
+            </p>
+
+            <p>
+              Instead of switching between multiple apps and scattered notes,
+              StudySync provides a centralized environment where students can
+              plan tasks, manage deadlines, and collaborate efficiently.
+            </p>
+
+          </div>
+
+        </div>
+        <!-- RIGHT -->
+
+        <div class="about-right">
+          <div class="about-section-title no-line">
+            STUDENT EXPERIENCE
+          </div>
+
+          <div class="feature-box">
+            <span>📊</span>
+            Smart Dashboard
+          </div>
+
+          <div class="feature-box">
+            <span>✅</span>
+            Attendance Tracking
+          </div>
+
+          <div class="feature-box">
+            <span>📝</span>
+            Assignment Manager
+          </div>
+
+          <div class="feature-box">
+            <span>📚</span>
+            Notes Organizer
+          </div>
+
+          <div class="feature-box">
+            <span>📅</span>
+            Academic Calendar
+          </div>
+
+          <div class="feature-box">
+            <span>⏱</span>
+            Study Planner
+          </div>
+
+          <div class="feature-box">
+            <span>🔔</span>
+            Smart Alerts
+          </div>
+
+          <div class="about-mini-quote">
+
+            “Built for students who say
+            ‘I’ll start studying tomorrow’ every day.”
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+
+      <div class="about-footer">
+
+        StudySync — Learn Smarter. Stress Less. 🚀
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- =========================================
+      HOW IT WORKS PAGE
+  ========================================= -->
+
+  <div class="info-page" id="worksPage" style="display:none;">
+
+    <!-- HERO -->
+
+    <div class="journey-header">
+
+      <h1>Your StudySync Journey</h1>
+
+      <p>
+        Discover how StudySync helps students stay organized,
+        productive, and academically focused through a smarter
+        academic workflow.
+      </p>
+
+    </div>
+
+
+
+    <!-- TIMELINE -->
+
+    <div class="journey-container">
+
+
+      <!-- STEP 1 -->
+
+      <div class="journey-item featured">
+
+        <div class="journey-number">
+          01
+        </div>
+
+        <div class="journey-card">
+
+          <div class="journey-card-top">
+
+            <div>
+
+              <span class="journey-badge">
+                START HERE
+              </span>
+
+              <h2>Create Your Account</h2>
+
+            </div>
+
+            <span class="journey-icon">👤</span>
+
+          </div>
+
+          <div class="journey-card-body">
+
+            <p>
+              Create your personalized StudySync workspace
+              and access all academic productivity tools
+              from one centralized platform.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- STEP 2 -->
+
+      <div class="journey-item">
+
+        <div class="journey-number">
+          02
+        </div>
+
+        <div class="journey-card">
+
+          <div class="journey-card-top">
+
+            <h2>Complete Your Setup</h2>
+
+            <span class="journey-icon">⚙️</span>
+
+          </div>
+
+          <div class="journey-card-body">
+
+            <p>
+              Add subjects, schedules, semester details,
+              and personalize your dashboard experience.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- STEP 3 -->
+
+      <div class="journey-item">
+
+        <div class="journey-number">
+          03
+        </div>
+
+        <div class="journey-card">
+
+          <div class="journey-card-top">
+
+            <h2>Track Attendance</h2>
+
+            <span class="journey-icon">✅</span>
+
+          </div>
+
+          <div class="journey-card-body">
+
+            <p>
+              Monitor attendance percentages, maintain records,
+              and stay updated with academic requirements.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- STEP 4 -->
+
+      <div class="journey-item">
+
+        <div class="journey-number">
+          04
+        </div>
+
+        <div class="journey-card">
+
+          <div class="journey-card-top">
+
+            <h2>Manage Assignments</h2>
+
+            <span class="journey-icon">📝</span>
+
+          </div>
+
+          <div class="journey-card-body">
+
+            <p>
+              Organize coursework, deadlines,
+              and assignment submissions efficiently.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- STEP 5 -->
+
+      <div class="journey-item">
+
+        <div class="journey-number">
+          05
+        </div>
+
+        <div class="journey-card">
+
+          <div class="journey-card-top">
+
+            <h2>Organize Notes</h2>
+
+            <span class="journey-icon">📚</span>
+
+          </div>
+
+          <div class="journey-card-body">
+
+            <p>
+              Keep class notes structured and accessible
+              for revision and collaborative learning.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- STEP 6 -->
+
+      <div class="journey-item">
+
+        <div class="journey-number">
+          06
+        </div>
+
+        <div class="journey-card">
+
+          <div class="journey-card-top">
+
+            <h2>Plan Study Sessions</h2>
+
+            <span class="journey-icon">🧠</span>
+
+          </div>
+
+          <div class="journey-card-body">
+
+            <p>
+              Build productive study schedules and maintain
+              focus through smart planning tools.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- STEP 7 -->
+
+      <div class="journey-item">
+
+        <div class="journey-number">
+          07
+        </div>
+
+        <div class="journey-card">
+
+          <div class="journey-card-top">
+
+            <h2>Stay Synced with Calendar</h2>
+
+            <span class="journey-icon">📅</span>
+
+          </div>
+
+          <div class="journey-card-body">
+
+            <p>
+              Track exams, events, submissions,
+              and academic milestones using the calendar.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- STEP 8 -->
+
+      <div class="journey-item">
+
+        <div class="journey-number">
+          08
+        </div>
+
+        <div class="journey-card">
+
+          <div class="journey-card-top">
+
+            <h2>Achieve Better Productivity</h2>
+
+            <span class="journey-icon">⭐</span>
+
+          </div>
+
+          <div class="journey-card-body">
+
+            <p>
+              Stay consistent, reduce stress,
+              and improve your academic workflow daily.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="setup.js"></script>
+
+</body>
+</html>

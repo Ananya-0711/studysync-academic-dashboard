@@ -788,25 +788,7 @@ body.dark-mode .badge-gray{
     color:#f3f4f6;
 }
 
-/* ═══════════════════════════════════════
-   ROOT COLORS
-═══════════════════════════════════════ */
 
-:root{
-  --about-bg:#ffffff;
-  --about-card:#f8fafc;
-  --about-text:#334155;
-  --about-subtext:#64748b;
-  --about-border:#e2e8f0;
-}
-
-body.dark-mode{
-  --about-bg:#111827;
-  --about-card:#1e293b;
-  --about-text:#f1f5f9;
-  --about-subtext:#94a3b8;
-  --about-border:#334155;
-}
 /* ═══════════════════════════════════════
    STUDYSYNC INFO MODAL
    ABOUT + HOW IT WORKS + HELP CENTER
