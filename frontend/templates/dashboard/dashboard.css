@@ -1100,7 +1100,7 @@ body.dark-mode .notif-msg,
 body.dark-mode .upcoming-meta,
 body.dark-mode .alert-msg,
 body.dark-mode p{
-  color:#cbd5e1;
+  color: #cbd5e1;
 }
 
 /* INPUTS */
@@ -1211,7 +1211,7 @@ body.dark-mode .asgn-title{
 }
 
 body.dark-mode .alert-msg{
-  color:black;
+  color: #e2e8f0;
 }
 
 body.dark-mode .alert-msg strong{
