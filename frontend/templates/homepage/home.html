@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudySync - Home</title>
+  <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="home.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════ -->
+  <nav class="navbar">
+
+    <!-- Left -->
+    <div class="nav-left">
+
+      <!-- Logo -->
+      <a href="#" class="logo" onclick="event.preventDefault(); openAboutModal();">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/>
+            <path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/>
+          </svg>
+        </div>
+        <span class="logo-text">StudySync</span>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <!-- Nav Links -->
+      <ul class="nav-links">
+
+        <li>
+          <a href="../homepage/home.html"
+            class="nav-link active">
+            Home
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Dashboard
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Attendance
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Assignments
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Study Planner
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Notes
+          </a>
+        </li>
+
+        <li>
+          <a href="#"
+            class="nav-link">
+            Calendar
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <!-- Right -->
+    <div class="nav-right">
+
+      <!-- Bell -->
+        <div class="notification-box" id="bellBtn">
+
+            <i class="fa-regular fa-bell"></i>
+
+            <span class="notification-count">
+                1
+            </span>
+
+        </div>
+
+        <!-- PROFILE -->
+
+        <div class="profile-container">
+
+            <button class="profile-btn"
+                id="profileBtn">
+                    S
+            </button>
+
+            <!-- DROPDOWN -->
+
+            <div class="profile-dropdown"
+                id="profileDropdown">
+
+                <!-- HEADER -->
+
+                <div class="profile-header">
+
+                    <h3>
+                        Student Profile
+                    </h3>
+
+                    <p>
+                        student@studysync.com
+                    </p>
+
+                </div>
+
+                <!-- OPTIONS -->
+
+                <div class="dropdown-option">
+
+                    <i class="fa-solid fa-code"></i>
+
+                    Current Build
+
+                </div>
+
+                <div class="dropdown-option">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    Joined Workspace
+
+                </div>
+
+                <div class="dropdown-option">
+
+                    <i class="fa-solid fa-repeat"></i>
+
+                    Switch Workspace
+
+                </div>
+
+                <div class="dropdown-option">
+                    <i class="fa-solid fa-gear"></i>
+                        Settings
+                </div>
+
+                <hr>
+
+                    <!-- APPEARANCE -->
+
+                    <div class="theme-title">
+
+                        Appearance Mode
+
+                    </div>
+
+                    <div class="theme-buttons">
+
+                      <button id="lightMode">Light</button>
+
+                      <button id="darkMode">Dark</button>
+
+                    </div>
+
+                <hr>
+
+                    <!-- LOGOUT -->
+
+                    <div class="dropdown-option logout">
+
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                        Logout
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+  </nav>
+<!-- ════════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="home-inner">
+    <div class="welcome">
+      <h2>Welcome Back 👋</h2>
+      <p>Organize your academic life smarter with StudySync.</p>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-chip"><span class="dot" style="background:#10b981"></span>85% Attendance</div>
+      <div class="stat-chip"><span class="dot" style="background:#f59e0b"></span>4 Pending Tasks</div>
+      <div class="stat-chip"><span class="dot" style="background:#7c3aed"></span>3 Study Sessions</div>
+      <div class="stat-chip"><span class="dot" style="background:#f43f5e"></span>2 Exams This Week</div>
+    </div>
+
+    <p class="section-label">Your Academic Tools</p>
+
+    <div class="cards">
+      <!-- Attendance -->
+      <div class="card" data-accent="violet" onclick="navigate('attendance')">
+        <div class="card-top">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+          </div>
+          <span class="card-badge">Daily</span>
+        </div>
+        <h3>Attendance</h3>
+        <p>Log and monitor your daily class attendance and absence records.</p>
+        <div class="card-stats">
+          <div class="card-stat"><span class="val">85%</span><span class="lbl">Overall</span></div>
+          <div class="card-stat"><span class="val">3</span><span class="lbl">Absences</span></div>
+          <div class="card-stat"><span class="val">17</span><span class="lbl">Present</span></div>
+        </div>
+        <div class="card-progress">
+          <div class="cp-row"><span>Attendance Rate</span><span>85%</span></div>
+          <div class="cp-track"><div class="cp-fill" style="width:85%"></div></div>
+        </div>
+        <button class="card-btn">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          View Attendance
+        </button>
+      </div>
+
+      <!-- Assignments -->
+      <div class="card" data-accent="sky" onclick="navigate('assignments')">
+        <div class="card-top">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <span class="card-badge">4 Pending</span>
+        </div>
+        <h3>Assignments</h3>
+        <p>Manage pending tasks, deadlines and submission status at a glance.</p>
+        <div class="card-stats">
+          <div class="card-stat"><span class="val">4</span><span class="lbl">Pending</span></div>
+          <div class="card-stat"><span class="val">12</span><span class="lbl">Done</span></div>
+          <div class="card-stat"><span class="val">1</span><span class="lbl">Overdue</span></div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">Math – Due Tomorrow</span>
+          <span class="tag">Physics Lab</span>
+          <span class="tag">+2 more</span>
+        </div>
+        <button class="card-btn">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          View Assignments
+        </button>
+      </div>
+
+      <!-- Study Planner -->
+      <div class="card" data-accent="emerald" onclick="navigate('planner')">
+        <div class="card-top">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+          </div>
+          <span class="card-badge">On Track</span>
+        </div>
+        <h3>Study Planner</h3>
+        <p>Plan your study sessions, set goals and stay on top of your schedule.</p>
+        <div class="card-stats">
+          <div class="card-stat"><span class="val">3</span><span class="lbl">Sessions</span></div>
+          <div class="card-stat"><span class="val">6h</span><span class="lbl">Planned</span></div>
+          <div class="card-stat"><span class="val">2</span><span class="lbl">Goals</span></div>
+        </div>
+        <div class="card-progress">
+          <div class="cp-row"><span>Weekly Goal Progress</span><span>68%</span></div>
+          <div class="cp-track"><div class="cp-fill" style="width:68%"></div></div>
+        </div>
+        <button class="card-btn">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          Open Planner
+        </button>
+      </div>
+    </div>
+
+    <div class="cards-row2">
+      <!-- Notes -->
+      <div class="card" data-accent="amber" onclick="navigate('notes')">
+        <div class="card-top">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <span class="card-badge">8 Subjects</span>
+        </div>
+        <h3>Notes</h3>
+        <p>Capture, organise and review subject-wise notes all in one place.</p>
+        <div class="card-stats">
+          <div class="card-stat"><span class="val">34</span><span class="lbl">Notes</span></div>
+          <div class="card-stat"><span class="val">8</span><span class="lbl">Subjects</span></div>
+          <div class="card-stat"><span class="val">5</span><span class="lbl">Pinned</span></div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">Physics</span><span class="tag">Chemistry</span>
+          <span class="tag">Mathematics</span><span class="tag">+5 more</span>
+        </div>
+        <button class="card-btn">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          Browse Notes
+        </button>
+      </div>
+
+      <!-- Calendar -->
+      <div class="card" data-accent="rose" onclick="navigate('calendar')">
+        <div class="card-top">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <span class="card-badge">2 Exams Soon</span>
+        </div>
+        <h3>Calendar</h3>
+        <p>View upcoming exams, events and important academic dates.</p>
+        <div class="card-stats">
+          <div class="card-stat"><span class="val">2</span><span class="lbl">Exams</span></div>
+          <div class="card-stat"><span class="val">5</span><span class="lbl">Events</span></div>
+          <div class="card-stat"><span class="val">3</span><span class="lbl">Reminders</span></div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">Mid-Term – May 12</span>
+          <span class="tag">Project Due – May 9</span>
+          <span class="tag">+3 more</span>
+        </div>
+        <button class="card-btn">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          View Calendar
+        </button>
+      </div>
+    </div>
+
+    <button class="setup-btn" onclick="alert('Setting up workspace...')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Setup Workspace
+    </button>
+  </div>
+</div>
+
+
+<!-- ABOUT MODAL -->
+
+<div class="about-overlay" id="aboutOverlay">
+
+  <div class="about-modal">
+
+    <!-- CLOSE -->
+
+    <button class="about-close" onclick="closeAboutModal()">
+      ✕
+    </button>
+
+    <!-- HEADER -->
+
+    <div class="about-header">
+
+      <div class="about-badge">
+        About-StudySync
+      </div>
+
+      <h2>
+        Your Academic Life, Finally Organized.
+      </h2>
+
+      <p>
+        Attendance, assignments, notes, deadlines —
+        everything in one clean and stress-free workspace.
+      </p>
+
+    </div>
+    <!-- =========================================
+              TAB BUTTON
+          ========================================= -->
+<div class="info-tabs">
+
+  <button class="info-tab active"
+    onclick="switchInfoTab('about', this)">
+
+    About
+
+</button>
+
+<button class="info-tab"
+  onclick="switchInfoTab('works', this)">
+
+  How It Works
+
+</button>
+
+</div>
+    <!-- CONTENT -->
+
+    <div class="info-page active" id="aboutPage">
+
+      <div class="about-section-title">
+        PLATFORM OVERVIEW
+      </div>
+
+      <div class="about-content">
+
+      <!-- LEFT -->
+
+       <div class="about-left">
+
+        <div class="about-card">
+
+          <h3>📘 What is StudySync?</h3>
+
+          <p>
+            StudySync is a student-focused productivity and collaboration platform
+            designed to simplify academic life.
+          </p>
+
+          <p>
+            From managing study schedules and organizing coursework to collaborating
+            with peers and tracking progress, StudySync brings essential academic
+            tools together into one streamlined workspace.
+          </p>
+
+          <p>
+            Our goal is to help students stay focused, reduce academic stress,
+            and build more consistent learning habits through a clean and intuitive experience.
+          </p>
+
+        </div>
+
+        <div class="about-card">
+
+          <h3>🎯 Why Students Love It</h3>
+
+          <p>
+            Built to make student life simpler,
+            faster, and way less chaotic.
+            Study smarter, stay organized,
+            and never miss what matters.
+          </p>
+
+           <p>
+            Instead of switching between multiple apps and scattered notes,
+            StudySync provides a centralized environment where students can
+            plan tasks, manage deadlines, and collaborate efficiently.
+          </p>
+
+        </div>
+
+      </div>
+      <!-- RIGHT -->
+
+      <div class="about-right">
+         <div class="about-section-title no-line">
+          STUDENT EXPERIENCE
+        </div>
+
+        <div class="feature-box">
+          <span>📊</span>
+          Smart Dashboard
+        </div>
+
+        <div class="feature-box">
+          <span>✅</span>
+          Attendance Tracking
+        </div>
+
+        <div class="feature-box">
+          <span>📝</span>
+          Assignment Manager
+        </div>
+
+        <div class="feature-box">
+          <span>📚</span>
+          Notes Organizer
+        </div>
+
+        <div class="feature-box">
+          <span>📅</span>
+          Academic Calendar
+        </div>
+
+        <div class="feature-box">
+          <span>⏱</span>
+          Study Planner
+        </div>
+
+        <div class="feature-box">
+          <span>🔔</span>
+          Smart Alerts
+        </div>
+
+        <div class="about-mini-quote">
+
+          “Built for students who say
+          ‘I’ll start studying tomorrow’ every day.”
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <div class="about-footer">
+
+      StudySync — Learn Smarter. Stress Less. 🚀
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================================
+     HOW IT WORKS PAGE
+========================================= -->
+
+<div class="info-page" id="worksPage" style="display:none;">
+
+  <!-- HERO -->
+
+  <div class="journey-header">
+
+    <h1>Your StudySync Journey</h1>
+
+    <p>
+      Discover how StudySync helps students stay organized,
+      productive, and academically focused through a smarter
+      academic workflow.
+    </p>
+
+  </div>
+
+
+
+  <!-- TIMELINE -->
+
+  <div class="journey-container">
+
+
+    <!-- STEP 1 -->
+
+    <div class="journey-item featured">
+
+      <div class="journey-number">
+        01
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <div>
+
+            <span class="journey-badge">
+              START HERE
+            </span>
+
+            <h2>Create Your Account</h2>
+
+          </div>
+
+          <span class="journey-icon">👤</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Create your personalized StudySync workspace
+            and access all academic productivity tools
+            from one centralized platform.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 2 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        02
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Complete Your Setup</h2>
+
+          <span class="journey-icon">⚙️</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Add subjects, schedules, semester details,
+            and personalize your dashboard experience.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 3 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        03
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Track Attendance</h2>
+
+          <span class="journey-icon">✅</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Monitor attendance percentages, maintain records,
+            and stay updated with academic requirements.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 4 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        04
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Manage Assignments</h2>
+
+          <span class="journey-icon">📝</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Organize coursework, deadlines,
+            and assignment submissions efficiently.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 5 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        05
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Organize Notes</h2>
+
+          <span class="journey-icon">📚</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Keep class notes structured and accessible
+            for revision and collaborative learning.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 6 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        06
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Plan Study Sessions</h2>
+
+          <span class="journey-icon">🧠</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Build productive study schedules and maintain
+            focus through smart planning tools.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 7 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        07
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Stay Synced with Calendar</h2>
+
+          <span class="journey-icon">📅</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Track exams, events, submissions,
+            and academic milestones using the calendar.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 8 -->
+
+    <div class="journey-item">
+
+      <div class="journey-number">
+        08
+      </div>
+
+      <div class="journey-card">
+
+        <div class="journey-card-top">
+
+          <h2>Achieve Better Productivity</h2>
+
+          <span class="journey-icon">⭐</span>
+
+        </div>
+
+        <div class="journey-card-body">
+
+          <p>
+            Stay consistent, reduce stress,
+            and improve your academic workflow daily.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+      <script src="home.js"></script>
+
+</body>
+
+</html>
