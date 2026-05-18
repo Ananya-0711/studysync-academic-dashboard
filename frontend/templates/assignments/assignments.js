@@ -98,21 +98,37 @@ const darkBtn =
 const lightBtn =
   document.getElementById("lightMode");
 
+/* APPLY SAVED THEME */
+
+if(localStorage.getItem("theme") === "dark"){
+
+  document.body.classList.add("dark-mode");
+
+}
+
+/* DARK MODE */
+
 if(darkBtn){
 
   darkBtn.onclick = ()=>{
 
     document.body.classList.add("dark-mode");
 
+    localStorage.setItem("theme","dark");
+
   };
 
 }
+
+/* LIGHT MODE */
 
 if(lightBtn){
 
   lightBtn.onclick = ()=>{
 
     document.body.classList.remove("dark-mode");
+
+    localStorage.setItem("theme","light");
 
   };
 

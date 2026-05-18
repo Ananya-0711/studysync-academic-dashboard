@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudySync - Dashboard</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════ -->
+  <nav class="navbar">
+
+    <!-- Left -->
+    <div class="nav-left">
+
+      <!-- Logo -->
+      <a href="#" class="logo" onclick="event.preventDefault(); openAboutModal();">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/>
+            <path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/>
+          </svg>
+        </div>
+        <span class="logo-text">StudySync</span>
+      </a>
+
+      <div class="nav-divider"></div>
+
+
+      <!-- Nav Links -->
+        <ul class="nav-links">
+
+          <li>
+            <a href="#"
+              class="nav-link">
+              Home
+            </a>
+          </li>
+
+          <li>
+            <a href="../dashboard/dashboard.html"
+              class="nav-link active">
+              Dashboard
+            </a>
+          </li>
+
+          <li>
+            <a href="#"
+              class="nav-link">
+              Attendance
+            </a>
+          </li>
+
+          <li>
+            <a href="#"
+              class="nav-link">
+              Assignments
+            </a>
+          </li>
+
+          <li>
+            <a href="#"
+              class="nav-link">
+              Study Planner
+            </a>
+          </li>
+
+          <li>
+            <a href="#"
+              class="nav-link">
+              Notes
+            </a>
+          </li>
+
+          <li>
+            <a href="#"
+              class="nav-link">
+              Calendar
+            </a>
+          </li>
+
+        </ul>
+    </div>
+
+    <!-- Right -->
+    <div class="nav-right">
+
+      <!-- Bell -->
+        <div class="notification-box" id="bellBtn">
+
+            <i class="fa-regular fa-bell"></i>
+
+            <span class="notification-count">
+                1
+            </span>
+
+        </div>
+
+        <!-- PROFILE -->
+
+        <div class="profile-container">
+
+            <button class="profile-btn"
+                id="profileBtn">
+                    S
+            </button>
+
+            <!-- DROPDOWN -->
+
+            <div class="profile-dropdown"
+                id="profileDropdown">
+
+                <!-- HEADER -->
+
+                <div class="profile-header">
+
+                    <h3>
+                        Student Profile
+                    </h3>
+
+                    <p>
+                        student@studysync.com
+                    </p>
+
+                </div>
+
+                <!-- OPTIONS -->
+
+                <div class="dropdown-option">
+
+                    <i class="fa-solid fa-code"></i>
+
+                    Current Build
+
+                </div>
+
+                <div class="dropdown-option">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    Joined Workspace
+
+                </div>
+
+                <div class="dropdown-option">
+
+                    <i class="fa-solid fa-repeat"></i>
+
+                    Switch Workspace
+
+                </div>
+
+                <div class="dropdown-option">
+                    <i class="fa-solid fa-gear"></i>
+                        Settings
+                </div>
+
+                <hr>
+
+                    <!-- APPEARANCE -->
+
+                    <div class="theme-title">
+
+                        Appearance Mode
+
+                    </div>
+
+                    <div class="theme-buttons">
+
+                      <button id="lightMode">Light</button>
+
+                      <button id="darkMode">Dark</button>
+
+                    </div>
+
+                <hr>
+
+                    <!-- LOGOUT -->
+
+                    <div class="dropdown-option logout">
+
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                        Logout
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       MAIN DASHBOARD
+  ═══════════════════════════════════════ -->
+  <main class="dashboard">
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Academic Dashboard</h1>
+        <p>Track your progress and stay on top of your studies</p>
+      </div>
+      <div class="hero-date">
+        <span id="currentDate"></span>
+      </div>
+    </section>
+
+    <!-- ── STATS CARDS ── -->
+    <section class="stats-grid">
+
+      <div class="stat-card" style="--accent:#7C3AED;">
+        <div class="stat-icon" style="background:#EDE9FE;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Study Hours This Week</span>
+          <span class="stat-value">24.5</span>
+          <span class="stat-sub">↑ 3.2 hrs from last week</span>
+        </div>
+      </div>
+
+      <div class="stat-card" style="--accent:#059669;">
+        <div class="stat-icon" style="background:#D1FAE5;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Attendance Rate</span>
+          <span class="stat-value">78%</span>
+          <span class="stat-sub">↓ 2% from last month</span>
+        </div>
+      </div>
+
+      <div class="stat-card" style="--accent:#DC2626;">
+        <div class="stat-icon" style="background:#FEE2E2;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Pending Assignments</span>
+          <span class="stat-value">6</span>
+          <span class="stat-sub">2 due this week</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── CHARTS ROW ── -->
+    <section class="charts-row">
+
+      <!-- Attendance Doughnut -->
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h2 class="chart-title">Attendance Overview</h2>
+            <p class="chart-sub">Current semester breakdown</p>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-dot" style="background:#7C3AED;"></span> Attended
+            <span class="legend-dot" style="background:#E0D7FF; margin-left:12px;"></span> Missed
+          </div>
+        </div>
+        <div class="doughnut-wrap">
+          <canvas id="attendanceChart"></canvas>
+          <div class="doughnut-center">
+            <span class="dc-value">78%</span>
+            <span class="dc-label">Attended</span>
+          </div>
+        </div>
+        <button class="chart-btn purple-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Update Attendance
+        </button>
+      </div>
+
+      <!-- Study Hours Line Chart -->
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div>
+            <h2 class="chart-title">Daily Study Activity</h2>
+            <p class="chart-sub">Hours studied per day this week</p>
+          </div>
+        </div>
+        <div class="line-wrap">
+          <canvas id="studyChart"></canvas>
+        </div>
+        <button class="chart-btn indigo-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Log Study Hours
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ── ATTENDANCE PREDICTION ── -->
+    <section class="section-block">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-icon">🔮</span>
+          Attendance Prediction
+        </h2>
+        <span class="section-badge">ML Powered</span>
+      </div>
+
+      <div class="prediction-grid">
+
+        <div class="alert-card critical">
+          <div class="alert-top">
+            <span class="alert-badge danger">⚠ Critical</span>
+            <span class="alert-subject">CS403PC — DBMS</span>
+          </div>
+          <p class="alert-msg">Predicted to drop below 75% by next week. You need to attend the next <strong>3 consecutive classes</strong> to recover.</p>
+          <div class="alert-bar-wrap">
+            <div class="alert-bar" style="--fill:62%; --color:#EF4444;"></div>
+            <span class="alert-pct">62%</span>
+          </div>
+        </div>
+
+        <div class="alert-card critical">
+          <div class="alert-top">
+            <span class="alert-badge danger">⚠ Critical</span>
+            <span class="alert-subject">CS401PC — Discrete Maths</span>
+          </div>
+          <p class="alert-msg">Currently at borderline attendance. Missing 1 more class will trigger a <strong>shortage warning</strong> from faculty.</p>
+          <div class="alert-bar-wrap">
+            <div class="alert-bar" style="--fill:74%; --color:#F97316;"></div>
+            <span class="alert-pct">74%</span>
+          </div>
+        </div>
+
+        <div class="alert-card safe">
+          <div class="alert-top">
+            <span class="alert-badge success">✓ Safe Zone</span>
+            <span class="alert-subject">CS405PC — OOP Java</span>
+          </div>
+          <p class="alert-msg">Attendance is healthy. You can afford to miss <strong>2 more classes</strong> while staying above 75%.</p>
+          <div class="alert-bar-wrap">
+            <div class="alert-bar" style="--fill:88%; --color:#10B981;"></div>
+            <span class="alert-pct">88%</span>
+          </div>
+        </div>
+
+        <div class="alert-card safe">
+          <div class="alert-top">
+            <span class="alert-badge success">✓ Safe Zone</span>
+            <span class="alert-subject">CS402PC — ATCD</span>
+          </div>
+          <p class="alert-msg">On track. Predicted to maintain above 80% through end of semester at current rate.</p>
+          <div class="alert-bar-wrap">
+            <div class="alert-bar" style="--fill:82%; --color:#10B981;"></div>
+            <span class="alert-pct">82%</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── BOTTOM ROW: Assignments + Notifications ── -->
+    <section class="bottom-row">
+
+      <!-- Assignment Alerts + Upcoming -->
+      <div class="bottom-left">
+
+        <!-- Assignment Alerts -->
+        <div class="section-block">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">🔔</span>
+              Assignment Alerts
+            </h2>
+          </div>
+
+          <div class="assignment-alerts">
+
+            <div class="assignment-alert urgent">
+              <div class="asgn-left">
+                <span class="urgency-dot red"></span>
+                <div>
+                  <div class="asgn-title">DBMS Lab Report</div>
+                  <div class="asgn-course">CS406PC</div>
+                </div>
+              </div>
+              <div class="asgn-right">
+                <span class="asgn-badge red">Due Tomorrow</span>
+              </div>
+            </div>
+
+            <div class="assignment-alert moderate">
+              <div class="asgn-left">
+                <span class="urgency-dot orange"></span>
+                <div>
+                  <div class="asgn-title">Discrete Maths Assignment</div>
+                  <div class="asgn-course">CS401PC</div>
+                </div>
+              </div>
+              <div class="asgn-right">
+                <span class="asgn-badge orange">Due in 3 days</span>
+              </div>
+            </div>
+
+            <div class="assignment-alert low">
+              <div class="asgn-left">
+                <span class="urgency-dot green"></span>
+                <div>
+                  <div class="asgn-title">Java Mini Project</div>
+                  <div class="asgn-course">CS405PC</div>
+                </div>
+              </div>
+              <div class="asgn-right">
+                <span class="asgn-badge green">Due in 7 days</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Upcoming Assignments -->
+        <div class="section-block" style="margin-top:20px;">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">📋</span>
+              Upcoming Assignments
+            </h2>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <a href="#" class="view-all-link">View All</a>
+              <button class="chart-btn purple-btn small-btn">+ Add</button>
+            </div>
+          </div>
+
+          <div class="upcoming-list">
+
+            <div class="upcoming-card">
+              <div class="upcoming-left">
+                <div class="upcoming-color" style="background:#7C3AED;"></div>
+                <div>
+                  <div class="upcoming-title">AI Assignment — Search Algorithms</div>
+                  <div class="upcoming-meta">CS404PC &nbsp;·&nbsp; May 18, 2026</div>
+                </div>
+              </div>
+              <span class="upcoming-status pending">Pending</span>
+            </div>
+
+            <div class="upcoming-card">
+              <div class="upcoming-left">
+                <div class="upcoming-color" style="background:#0EA5E9;"></div>
+                <div>
+                  <div class="upcoming-title">Compiler Design — LL(1) Parsing</div>
+                  <div class="upcoming-meta">CS402PC &nbsp;·&nbsp; May 20, 2026</div>
+                </div>
+              </div>
+              <span class="upcoming-status pending">Pending</span>
+            </div>
+
+            <div class="upcoming-card">
+              <div class="upcoming-left">
+                <div class="upcoming-color" style="background:#10B981;"></div>
+                <div>
+                  <div class="upcoming-title">Research Project — Field Report</div>
+                  <div class="upcoming-meta">CS408PC &nbsp;·&nbsp; May 25, 2026</div>
+                </div>
+              </div>
+              <span class="upcoming-status done">Submitted</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Notifications -->
+      <div class="bottom-right">
+        <div class="section-block full-height">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">📬</span>
+              Notifications
+            </h2>
+            <span class="notif-count">3 new</span>
+          </div>
+
+          <div class="notif-list">
+
+            <div class="notif-card attendance">
+              <div class="notif-icon-wrap" style="background:#EDE9FE;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Attendance Alert</div>
+                <div class="notif-msg">Your DBMS attendance has dropped to 62%. Immediate action required.</div>
+                <div class="notif-time">2 hours ago</div>
+              </div>
+              <span class="notif-dot"></span>
+            </div>
+
+            <div class="notif-card assignment">
+              <div class="notif-icon-wrap" style="background:#FEE2E2;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Assignment Due Soon</div>
+                <div class="notif-msg">DBMS Lab Report is due tomorrow. Don't forget to submit!</div>
+                <div class="notif-time">5 hours ago</div>
+              </div>
+              <span class="notif-dot"></span>
+            </div>
+
+            <div class="notif-card study">
+              <div class="notif-icon-wrap" style="background:#D1FAE5;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Weekly Study Summary</div>
+                <div class="notif-msg">Great work! You studied 24.5 hours this week. That's 3.2 hrs more than last week.</div>
+                <div class="notif-time">Yesterday</div>
+              </div>
+              <span class="notif-dot read"></span>
+            </div>
+
+            <div class="notif-card info">
+              <div class="notif-icon-wrap" style="background:#DBEAFE;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Semester Progress</div>
+                <div class="notif-msg">Mid-semester exams are in 10 days. Your study plan has been updated.</div>
+                <div class="notif-time">2 days ago</div>
+              </div>
+              <span class="notif-dot read"></span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+
+      <!-- ABOUT MODAL -->
+
+      <div class="about-overlay" id="aboutOverlay">
+
+        <div class="about-modal">
+
+          <!-- CLOSE -->
+
+          <button class="about-close" onclick="closeAboutModal()">
+            ✕
+          </button>
+
+          <!-- HEADER -->
+
+          <div class="about-header">
+
+            <div class="about-badge">
+              About-StudySync
+            </div>
+
+            <h2>
+              Your Academic Life, Finally Organized.
+            </h2>
+
+            <p>
+              Attendance, assignments, notes, deadlines —
+              everything in one clean and stress-free workspace.
+            </p>
+
+          </div>
+          <!-- =========================================
+                    TAB BUTTON
+                ========================================= -->
+      <div class="info-tabs">
+
+        <button class="info-tab active"
+          onclick="switchInfoTab('about', this)">
+
+          About
+
+      </button>
+
+      <button class="info-tab"
+        onclick="switchInfoTab('works', this)">
+
+        How It Works
+
+      </button>
+
+      </div>
+          <!-- CONTENT -->
+
+          <div class="info-page active" id="aboutPage">
+
+            <div class="about-section-title">
+              PLATFORM OVERVIEW
+            </div>
+
+            <div class="about-content">
+
+            <!-- LEFT -->
+
+            <div class="about-left">
+
+              <div class="about-card">
+
+                <h3>📘 What is StudySync?</h3>
+
+                <p>
+                  StudySync is a student-focused productivity and collaboration platform
+                  designed to simplify academic life.
+                </p>
+
+                <p>
+                  From managing study schedules and organizing coursework to collaborating
+                  with peers and tracking progress, StudySync brings essential academic
+                  tools together into one streamlined workspace.
+                </p>
+
+                <p>
+                  Our goal is to help students stay focused, reduce academic stress,
+                  and build more consistent learning habits through a clean and intuitive experience.
+                </p>
+
+              </div>
+
+              <div class="about-card">
+
+                <h3>🎯 Why Students Love It</h3>
+
+                <p>
+                  Built to make student life simpler,
+                  faster, and way less chaotic.
+                  Study smarter, stay organized,
+                  and never miss what matters.
+                </p>
+
+                <p>
+                  Instead of switching between multiple apps and scattered notes,
+                  StudySync provides a centralized environment where students can
+                  plan tasks, manage deadlines, and collaborate efficiently.
+                </p>
+
+              </div>
+
+            </div>
+            <!-- RIGHT -->
+
+            <div class="about-right">
+              <div class="about-section-title no-line">
+                STUDENT EXPERIENCE
+              </div>
+
+              <div class="feature-box">
+                <span>📊</span>
+                Smart Dashboard
+              </div>
+
+              <div class="feature-box">
+                <span>✅</span>
+                Attendance Tracking
+              </div>
+
+              <div class="feature-box">
+                <span>📝</span>
+                Assignment Manager
+              </div>
+
+              <div class="feature-box">
+                <span>📚</span>
+                Notes Organizer
+              </div>
+
+              <div class="feature-box">
+                <span>📅</span>
+                Academic Calendar
+              </div>
+
+              <div class="feature-box">
+                <span>⏱</span>
+                Study Planner
+              </div>
+
+              <div class="feature-box">
+                <span>🔔</span>
+                Smart Alerts
+              </div>
+
+              <div class="about-mini-quote">
+
+                “Built for students who say
+                ‘I’ll start studying tomorrow’ every day.”
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- FOOTER -->
+
+          <div class="about-footer">
+
+            StudySync — Learn Smarter. Stress Less. 🚀
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- =========================================
+          HOW IT WORKS PAGE
+      ========================================= -->
+
+      <div class="info-page" id="worksPage" style="display:none;">
+
+        <!-- HERO -->
+
+        <div class="journey-header">
+
+          <h1>Your StudySync Journey</h1>
+
+          <p>
+            Discover how StudySync helps students stay organized,
+            productive, and academically focused through a smarter
+            academic workflow.
+          </p>
+
+        </div>
+
+
+
+        <!-- TIMELINE -->
+
+        <div class="journey-container">
+
+
+          <!-- STEP 1 -->
+
+          <div class="journey-item featured">
+
+            <div class="journey-number">
+              01
+            </div>
+
+            <div class="journey-card">
+
+              <div class="journey-card-top">
+
+                <div>
+
+                  <span class="journey-badge">
+                    START HERE
+                  </span>
+
+                  <h2>Create Your Account</h2>
+
+                </div>
+
+                <span class="journey-icon">👤</span>
+
+              </div>
+
+              <div class="journey-card-body">
+
+                <p>
+                  Create your personalized StudySync workspace
+                  and access all academic productivity tools
+                  from one centralized platform.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- STEP 2 -->
+
+          <div class="journey-item">
+
+            <div class="journey-number">
+              02
+            </div>
+
+            <div class="journey-card">
+
+              <div class="journey-card-top">
+
+                <h2>Complete Your Setup</h2>
+
+                <span class="journey-icon">⚙️</span>
+
+              </div>
+
+              <div class="journey-card-body">
+
+                <p>
+                  Add subjects, schedules, semester details,
+                  and personalize your dashboard experience.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- STEP 3 -->
+
+          <div class="journey-item">
+
+            <div class="journey-number">
+              03
+            </div>
+
+            <div class="journey-card">
+
+              <div class="journey-card-top">
+
+                <h2>Track Attendance</h2>
+
+                <span class="journey-icon">✅</span>
+
+              </div>
+
+              <div class="journey-card-body">
+
+                <p>
+                  Monitor attendance percentages, maintain records,
+                  and stay updated with academic requirements.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- STEP 4 -->
+
+          <div class="journey-item">
+
+            <div class="journey-number">
+              04
+            </div>
+
+            <div class="journey-card">
+
+              <div class="journey-card-top">
+
+                <h2>Manage Assignments</h2>
+
+                <span class="journey-icon">📝</span>
+
+              </div>
+
+              <div class="journey-card-body">
+
+                <p>
+                  Organize coursework, deadlines,
+                  and assignment submissions efficiently.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- STEP 5 -->
+
+          <div class="journey-item">
+
+            <div class="journey-number">
+              05
+            </div>
+
+            <div class="journey-card">
+
+              <div class="journey-card-top">
+
+                <h2>Organize Notes</h2>
+
+                <span class="journey-icon">📚</span>
+
+              </div>
+
+              <div class="journey-card-body">
+
+                <p>
+                  Keep class notes structured and accessible
+                  for revision and collaborative learning.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- STEP 6 -->
+
+          <div class="journey-item">
+
+            <div class="journey-number">
+              06
+            </div>
+
+            <div class="journey-card">
+
+              <div class="journey-card-top">
+
+                <h2>Plan Study Sessions</h2>
+
+                <span class="journey-icon">🧠</span>
+
+              </div>
+
+              <div class="journey-card-body">
+
+                <p>
+                  Build productive study schedules and maintain
+                  focus through smart planning tools.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- STEP 7 -->
+
+          <div class="journey-item">
+
+            <div class="journey-number">
+              07
+            </div>
+
+            <div class="journey-card">
+
+              <div class="journey-card-top">
+
+                <h2>Stay Synced with Calendar</h2>
+
+                <span class="journey-icon">📅</span>
+
+              </div>
+
+              <div class="journey-card-body">
+
+                <p>
+                  Track exams, events, submissions,
+                  and academic milestones using the calendar.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- STEP 8 -->
+
+          <div class="journey-item">
+
+            <div class="journey-number">
+              08
+            </div>
+
+            <div class="journey-card">
+
+              <div class="journey-card-top">
+
+                <h2>Achieve Better Productivity</h2>
+
+                <span class="journey-icon">⭐</span>
+
+              </div>
+
+              <div class="journey-card-body">
+
+                <p>
+                  Stay consistent, reduce stress,
+                  and improve your academic workflow daily.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+
+</body>
+</html>

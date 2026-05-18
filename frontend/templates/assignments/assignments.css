@@ -607,6 +607,10 @@ body.dark-mode .navbar{
     border-bottom:1px solid #1e293b;
 }
 
+body.dark-mode .logo-text{
+  color: var(--purple);
+}
+
 /* NAV LINKS */
 
 body.dark-mode .nav-links a{
