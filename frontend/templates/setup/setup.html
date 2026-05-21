@@ -1,0 +1,199 @@
+{% load static studysync_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudySync - Semester Setup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="{% static 'setup/setup.css' %}"/>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="{% url 'dashboard_app:home' %}" class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/><path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/></svg></div><span class="logo-text">StudySync</span></a>
+    <div class="nav-divider"></div>
+    <ul class="nav-links">
+      <li><a href="{% url 'dashboard_app:home' %}" class="nav-link">Home</a></li>
+      <li><a href="{% url 'dashboard_app:dashboard' %}" class="nav-link">Dashboard</a></li>
+      <li><a href="{% url 'attendance_app:attendance' %}" class="nav-link">Attendance</a></li>
+      <li><a href="{% url 'assignments_app:assignments' %}" class="nav-link">Assignments</a></li>
+      <li><a href="{% url 'planner_app:planner' %}" class="nav-link">Study Planner</a></li>
+      <li><a href="{% url 'notes_app:notes' %}" class="nav-link">Notes</a></li>
+      <li><a href="{% url 'calendar_app:calendar' %}" class="nav-link">Calendar</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <div class="notification-box"><i class="fa-regular fa-bell"></i></div>
+    <div class="profile-container">
+      <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}</button>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-header"><h3>{{ user.first_name }} {{ user.last_name }}</h3><p>{{ user.email }}</p></div>
+        <hr>
+        <form method="POST" action="{% url 'auth_app:logout' %}">{% csrf_token %}<button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:10px 16px;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button></form>
+      </div>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}
+<div data-flash-messages style="position:fixed;top:72px;right:20px;z-index:9999;min-width:280px;">{% for message in messages %}<div style="background:{% if message.tags == 'error' %}#fef2f2{% else %}#f0fdf4{% endif %};color:{% if message.tags == 'error' %}#dc2626{% else %}#16a34a{% endif %};border:1px solid {% if message.tags == 'error' %}#fecaca{% else %}#bbf7d0{% endif %};padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:14px;font-weight:500;">{{ message }}</div>{% endfor %}</div>
+{% endif %}
+
+<main class="page-wrapper">
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <h1 class="page-title">Semester Setup</h1>
+      <p class="page-subtitle">Configure your subjects and timetable</p>
+    </div>
+    <div class="page-hero-meta">
+      <span class="semester-tag"><i class="fa-solid fa-graduation-cap"></i> Your Workspace</span>
+    </div>
+  </div>
+
+  <!-- SUBJECTS SECTION -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-header-left">
+        <h2 class="section-title"><span class="section-icon">📚</span> Subjects</h2>
+        <span class="section-count" id="subjectCount">{{ subject_count }} subject{{ subject_count|pluralize }}</span>
+      </div>
+      <button class="btn-primary" id="addSubjectBtn"><i class="fa-solid fa-plus"></i> Add Subject</button>
+    </div>
+    <div class="subjects-grid" id="subjectsGrid">
+      {% for subject in subjects %}
+      <div class="subject-card" style="--card-accent: {{ subject.color_hex }};">
+        <div class="subject-card-left">
+          <div class="subject-initial" style="background: {{ subject.bg_hex }}; color: {{ subject.color_hex }};">{{ subject.initials }}</div>
+          <div class="subject-info">
+            <span class="subject-name">{{ subject.name }}</span>
+            <span class="subject-code">{{ subject.code }}</span>
+          </div>
+        </div>
+        <div class="subject-card-right">
+          <span class="credits-badge">{{ subject.credits }} Credits</span>
+          <div class="card-actions">
+            <form method="POST" action="{% url 'setup_app:delete_subject' subject.pk %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="action-btn delete-btn" title="Delete" onclick="return confirm('Delete {{ subject.name }}?')"><i class="fa-solid fa-trash"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:#9ca3af;">
+        <i class="fa-solid fa-book" style="font-size:32px;margin-bottom:12px;display:block;"></i>
+        No subjects yet. Add your first subject!
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- TIMETABLE SECTION -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-header-left">
+        <h2 class="section-title"><span class="section-icon">🗓️</span> Timetable</h2>
+        <span class="section-count">Weekly schedule</span>
+      </div>
+      <button class="btn-primary" id="addSlotBtn"><i class="fa-solid fa-plus"></i> Add Slot</button>
+    </div>
+    <div class="timetable-list">
+      {% for day in days %}
+      <div class="day-card">
+        <div class="day-label">
+          <span class="day-name">{{ day }}</span>
+          <span class="day-count">{% with timetable|dictkey:day as day_slots %}{% if day_slots %}{{ day_slots|length }} class{{ day_slots|length|pluralize }}{% else %}No classes{% endif %}{% endwith %}</span>
+        </div>
+        <div class="day-slots">
+          {% with timetable|dictkey:day as day_slots %}
+          {% if day_slots %}
+            {% for slot in day_slots %}
+            <div class="slot" style="--slot-color: {{ slot.subject.color_hex }}; --slot-bg: {{ slot.subject.bg_hex }};">
+              <span class="slot-time">{{ slot.start_time|time:"H:i" }}</span>
+              <span class="slot-divider"></span>
+              <span class="slot-subject">{{ slot.subject.name }}</span>
+              <span class="slot-code">{{ slot.subject.code }}</span>
+              <form method="POST" action="{% url 'setup_app:delete_slot' slot.pk %}" style="margin-left:auto;">
+                {% csrf_token %}
+                <button type="submit" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:12px;" onclick="return confirm('Remove slot?')"><i class="fa-solid fa-xmark"></i></button>
+              </form>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="empty-slot"><i class="fa-regular fa-calendar-xmark"></i> No classes scheduled</div>
+          {% endif %}
+          {% endwith %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+
+<!-- ADD SUBJECT MODAL -->
+<div class="modal-overlay" id="subjectModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add New Subject</h3>
+      <button class="modal-close" id="closeSubjectModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form method="POST" action="{% url 'setup_app:add_subject' %}">
+      {% csrf_token %}
+      <div class="modal-body">
+        <div class="form-group"><label>Subject Name</label><input type="text" name="name" placeholder="e.g. Data Structures" required /></div>
+        <div class="form-row">
+          <div class="form-group"><label>Subject Code</label><input type="text" name="code" placeholder="e.g. CS201" required /></div>
+          <div class="form-group"><label>Credits</label><input type="number" name="credits" placeholder="e.g. 4" min="1" max="6" /></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" id="cancelSubjectModal">Cancel</button>
+        <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Subject</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ADD SLOT MODAL -->
+<div class="modal-overlay" id="slotModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add Timetable Slot</h3>
+      <button class="modal-close" id="closeSlotModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form method="POST" action="{% url 'setup_app:add_slot' %}">
+      {% csrf_token %}
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Day</label>
+            <select name="day">
+              <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+              <option>Thursday</option><option>Friday</option><option>Saturday</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Time</label><input type="time" name="start_time" required /></div>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select name="subject_id" required>
+            <option value="">Select a subject</option>
+            {% for subject in subjects %}
+            <option value="{{ subject.pk }}">{{ subject.name }} ({{ subject.code }})</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" id="cancelSlotModal">Cancel</button>
+        <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Slot</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'shared/shared.js' %}"></script>
+<script src="{% static 'setup/setup.js' %}"></script>
+</body>
+</html>

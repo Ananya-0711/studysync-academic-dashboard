@@ -1,0 +1,67 @@
+@import url('../shared/shared.css');
+
+/* ---- Homepage ---- */
+.home-inner { max-width: 1100px; margin: 0 auto; padding: 36px 24px; }
+.welcome h2 { font-size: 28px; font-weight: 800; color: #1f2937; margin-bottom: 6px; }
+.welcome p  { font-size: 15px; color: #9ca3af; }
+.stats-bar { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0 32px; }
+.stat-chip { display: flex; align-items: center; gap: 7px; background: #fff; border: 1px solid #e5e7eb; border-radius: 99px; padding: 7px 16px; font-size: 13px; font-weight: 600; color: #374151; }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #9ca3af; margin-bottom: 14px; }
+
+/* Cards */
+.cards, .cards-row2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 18px; }
+.cards-row2 { grid-template-columns: repeat(2, 1fr); }
+.card {
+  background: #fff; border-radius: 20px; padding: 22px;
+  border: 1px solid #f3f4f6; box-shadow: 0 2px 14px rgba(0,0,0,.05);
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  position: relative; overflow: hidden;
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(124,58,237,.12); }
+.card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--card-accent, #7c3aed); }
+.card[data-accent="violet"] { --card-accent: #7c3aed; }
+.card[data-accent="sky"]    { --card-accent: #0ea5e9; }
+.card[data-accent="emerald"]{ --card-accent: #10b981; }
+.card[data-accent="amber"]  { --card-accent: #f59e0b; }
+.card[data-accent="rose"]   { --card-accent: #f43f5e; }
+.card-top  { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.card-icon { width: 44px; height: 44px; border-radius: 13px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; }
+.card-icon svg { width: 22px; height: 22px; stroke: #7c3aed; stroke-width: 2; fill: none; }
+.card-badge { background: #ede9fe; color: #7c3aed; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.card h3 { font-size: 17px; font-weight: 800; color: #1f2937; margin-bottom: 6px; }
+.card p  { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+.card-progress { margin: 14px 0; }
+.cp-row { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: #6b7280; margin-bottom: 5px; }
+.cp-track { height: 7px; background: #f3f4f6; border-radius: 99px; overflow: hidden; }
+.cp-fill  { height: 100%; background: linear-gradient(90deg, #7c3aed, #a78bfa); border-radius: 99px; }
+.card-stats { display: flex; gap: 18px; margin: 14px 0; }
+.val { font-size: 22px; font-weight: 800; color: #1f2937; display: block; }
+.lbl { font-size: 11px; color: #9ca3af; font-weight: 600; text-transform: uppercase; }
+.card-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; padding: 10px; border-radius: 11px; border: 2px solid #ede9fe;
+  background: transparent; color: #7c3aed; font-size: 13px; font-weight: 700;
+  cursor: pointer; margin-top: 16px; transition: all 0.18s;
+}
+.card-btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+.card-btn:hover { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+
+/* Setup button */
+.setup-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: #fff; border: 1.5px solid #e5e7eb; border-radius: 13px;
+  padding: 12px 22px; font-size: 14px; font-weight: 700; color: #374151;
+  text-decoration: none; transition: all 0.18s; margin-top: 10px;
+}
+.setup-btn svg { width: 18px; height: 18px; stroke: #9ca3af; stroke-width: 2; fill: none; }
+.setup-btn:hover { border-color: #7c3aed; color: #7c3aed; background: #faf5ff; }
+.setup-btn:hover svg { stroke: #7c3aed; }
+
+@media (max-width: 900px) {
+  .cards { grid-template-columns: 1fr 1fr; }
+  .cards-row2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .cards, .cards-row2 { grid-template-columns: 1fr; }
+}

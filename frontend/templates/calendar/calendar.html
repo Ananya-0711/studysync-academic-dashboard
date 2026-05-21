@@ -1,0 +1,193 @@
+{% load static studysync_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudySync - Calendar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'calendar/calendar.css' %}"/>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="{% url 'dashboard_app:home' %}" class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/><path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/></svg></div><span class="logo-text">StudySync</span></a>
+    <div class="nav-divider"></div>
+    <ul class="nav-links">
+      <li><a href="{% url 'dashboard_app:home' %}" class="nav-link">Home</a></li>
+      <li><a href="{% url 'dashboard_app:dashboard' %}" class="nav-link">Dashboard</a></li>
+      <li><a href="{% url 'attendance_app:attendance' %}" class="nav-link">Attendance</a></li>
+      <li><a href="{% url 'assignments_app:assignments' %}" class="nav-link">Assignments</a></li>
+      <li><a href="{% url 'planner_app:planner' %}" class="nav-link">Study Planner</a></li>
+      <li><a href="{% url 'notes_app:notes' %}" class="nav-link">Notes</a></li>
+      <li><a href="{% url 'calendar_app:calendar' %}" class="nav-link active">Calendar</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <div class="notification-box" id="bellBtn"><i class="fa-regular fa-bell"></i></div>
+    <div class="profile-container">
+      <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}</button>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-header"><h3>{{ user.first_name }} {{ user.last_name }}</h3><p>{{ user.email }}</p></div>
+        <hr>
+        <form method="POST" action="{% url 'auth_app:logout' %}">{% csrf_token %}<button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:10px 16px;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button></form>
+      </div>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}<div data-flash-messages style="position:fixed;top:72px;right:20px;z-index:9999;min-width:280px;">{% for message in messages %}<div style="background:{% if message.tags == 'error' %}#fef2f2{% else %}#f0fdf4{% endif %};color:{% if message.tags == 'error' %}#dc2626{% else %}#16a34a{% endif %};border:1px solid {% if message.tags == 'error' %}#fecaca{% else %}#bbf7d0{% endif %};padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:14px;font-weight:500;">{{ message }}</div>{% endfor %}</div>{% endif %}
+
+<div id="page-calendar" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <div class="page-header-icon icon-rose"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="page-header-text"><h1>Calendar</h1><p>View upcoming exams, events and important academic dates.</p></div>
+      <button class="action-btn btn-rose" style="margin-left:auto" id="addEventBtn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Event</button>
+    </div>
+
+    <div class="page-tabs tabs-rose" id="tabs-calendar">
+      <button class="page-tab active" onclick="switchTab('calendar','month',this)">Month View</button>
+      <button class="page-tab" onclick="switchTab('calendar','events',this)">Events</button>
+      <button class="page-tab" onclick="switchTab('calendar','exams',this)">Exams</button>
+      <button class="page-tab" onclick="switchTab('calendar','reminders',this)">Reminders</button>
+    </div>
+
+    <!-- Month View Tab -->
+    <div class="tab-panel active" id="calendar-month">
+      <div class="summary-row">
+        <div class="sum-chip"><span class="s-val" style="color:#f43f5e">{{ exams_this_week }}</span><span class="s-lbl">Exams This Week</span></div>
+        <div class="sum-chip"><span class="s-val" style="color:#7c3aed">{{ upcoming_count }}</span><span class="s-lbl">Upcoming Events</span></div>
+        <div class="sum-chip"><span class="s-val" style="color:#f59e0b">{{ reminders_count }}</span><span class="s-lbl">Reminders</span></div>
+        <div class="sum-chip"><span class="s-val" style="color:#0ea5e9">{{ today|date:"M" }}</span><span class="s-lbl">Current Month</span></div>
+      </div>
+      <div class="section-box">
+        <div class="section-box-header">{{ month_name }}</div>
+        <div class="cal-grid" id="calendarGrid">
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:16px;">
+            {% for day_name in "Mon,Tue,Wed,Thu,Fri,Sat,Sun"|split:"," %}
+            <div style="text-align:center;font-size:12px;font-weight:700;color:#9ca3af;padding:4px;">{{ day_name }}</div>
+            {% endfor %}
+            {% for week in cal %}
+              {% for day in week %}
+              <div style="min-height:50px;border-radius:8px;padding:4px;text-align:center;{% if day == today.day %}background:#ede9fe;{% else %}background:#f9fafb;{% endif %}border:1px solid {% if day == today.day %}#7c3aed{% else %}#e5e7eb{% endif %};">
+                {% if day != 0 %}
+                <div style="font-size:12px;font-weight:{% if day == today.day %}700{% else %}500{% endif %};color:{% if day == today.day %}#7c3aed{% else %}#374151{% endif %};">{{ day }}</div>
+                {% if events_by_day|dictkey:day %}
+                  {% for ev in events_by_day|dictkey:day %}
+                  <div style="font-size:9px;margin-top:2px;background:{{ ev.dot_color }};color:#fff;border-radius:3px;padding:1px 3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ ev.title|truncatechars:10 }}</div>
+                  {% endfor %}
+                {% endif %}
+                {% endif %}
+              </div>
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="section-box">
+        <div class="section-box-header">Upcoming Events</div>
+        {% for event in upcoming_events %}
+        <div class="list-item">
+          <span class="list-dot" style="background:{{ event.dot_color }}"></span>
+          <div class="list-item-text"><h4>{{ event.title }}</h4><p>{{ event.description|default:event.location|default:"—" }}</p></div>
+          <div class="list-item-right">
+            <span class="badge {{ event.badge_class }}">{{ event.get_event_type_display }}</span>
+            <span style="font-size:11px;color:#9ca3af">{{ event.date|date:"M d" }}</span>
+            <form method="POST" action="{% url 'calendar_app:delete_event' event.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" style="background:#fef2f2;color:#dc2626;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;" onclick="return confirm('Delete?')">✕</button></form>
+          </div>
+        </div>
+        {% empty %}<p style="text-align:center;color:#9ca3af;padding:30px;">No upcoming events. Add one!</p>{% endfor %}
+      </div>
+    </div>
+
+    <!-- Events Tab -->
+    <div class="tab-panel" id="calendar-events">
+      <div class="section-box">
+        <div class="section-box-header">All Events</div>
+        <table class="data-table">
+          <thead><tr><th>Event</th><th>Type</th><th>Date</th><th>Time</th><th>Action</th></tr></thead>
+          <tbody>
+            {% for event in all_events %}
+            <tr>
+              <td>{{ event.title }}</td>
+              <td><span class="badge {{ event.badge_class }}">{{ event.get_event_type_display }}</span></td>
+              <td>{{ event.date|date:"M d" }}</td>
+              <td>{{ event.time|time:"g:i A"|default:"—" }}</td>
+              <td><form method="POST" action="{% url 'calendar_app:delete_event' event.pk %}">{% csrf_token %}<button type="submit" style="background:#fef2f2;color:#dc2626;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;" onclick="return confirm('Delete?')">Del</button></form></td>
+            </tr>
+            {% empty %}<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:20px;">No events yet.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Exams Tab -->
+    <div class="tab-panel" id="calendar-exams">
+      <div class="section-box">
+        <div class="section-box-header">Upcoming Exams <span class="sub">{{ exams.count }} exams</span></div>
+        {% for exam in exams %}
+        <div class="list-item">
+          <span class="list-dot" style="background:#f43f5e"></span>
+          <div class="list-item-text"><h4>{{ exam.title }}</h4><p>{{ exam.description|default:exam.location|default:"—" }}</p></div>
+          <div class="list-item-right"><span class="badge badge-red">{{ exam.date|date:"M d" }}</span></div>
+        </div>
+        {% empty %}<p style="text-align:center;color:#9ca3af;padding:30px;">No upcoming exams.</p>{% endfor %}
+      </div>
+    </div>
+
+    <!-- Reminders Tab -->
+    <div class="tab-panel" id="calendar-reminders">
+      <div class="section-box">
+        <div class="section-box-header">Reminders <span class="sub">{{ reminders_count }} active</span></div>
+        {% for reminder in reminders %}
+        <div class="list-item">
+          <span class="list-dot" style="background:#7c3aed"></span>
+          <div class="list-item-text"><h4>{{ reminder.title }}</h4><p>{{ reminder.description|default:"—" }}</p></div>
+          <div class="list-item-right"><span class="badge badge-yellow">{{ reminder.date|date:"M d" }}</span></div>
+        </div>
+        {% empty %}<p style="text-align:center;color:#9ca3af;padding:30px;">No reminders set.</p>{% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Event Modal -->
+<div id="addEventModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:440px;margin:20px;">
+    <h3 style="font-size:18px;font-weight:700;color:#1f2937;margin-bottom:20px;">Add Event</h3>
+    <form method="POST" action="{% url 'calendar_app:add_event' %}">
+      {% csrf_token %}
+      <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Title</label><input type="text" name="title" placeholder="Event title" required style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      <div style="display:flex;gap:12px;margin-bottom:14px;">
+        <div style="flex:1;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Type</label>
+          <select name="event_type" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;">
+            <option value="exam">Exam</option><option value="event">Event</option><option value="deadline">Deadline</option><option value="meeting">Meeting</option><option value="reminder">Reminder</option>
+          </select>
+        </div>
+        <div style="flex:1;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Date</label><input type="date" name="date" required style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:14px;">
+        <div style="flex:1;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Time (optional)</label><input type="time" name="time" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+        <div style="flex:1;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Location</label><input type="text" name="location" placeholder="e.g. Hall A" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      </div>
+      <div style="margin-bottom:20px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Description</label><textarea name="description" rows="2" placeholder="Optional details..." style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;resize:none;box-sizing:border-box;"></textarea></div>
+      <div style="display:flex;gap:10px;">
+        <button type="button" id="closeEventModal" style="flex:1;padding:12px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;">Cancel</button>
+        <button type="submit" style="flex:1;padding:12px;background:#f43f5e;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">Add Event</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'shared/shared.js' %}"></script>
+<script src="{% static 'calendar/calendar.js' %}"></script>
+<script>
+  const evBtn = document.getElementById('addEventBtn');
+  const evModal = document.getElementById('addEventModal');
+  const closeEvModal = document.getElementById('closeEventModal');
+  if(evBtn) evBtn.onclick = () => { evModal.style.display = 'flex'; };
+  if(closeEvModal) closeEvModal.onclick = () => { evModal.style.display = 'none'; };
+</script>
+</body>
+</html>

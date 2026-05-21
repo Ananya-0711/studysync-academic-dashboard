@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudySync - Study Planner</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'planner/planner.css' %}"/>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="{% url 'dashboard_app:home' %}" class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/><path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/></svg></div><span class="logo-text">StudySync</span></a>
+    <div class="nav-divider"></div>
+    <ul class="nav-links">
+      <li><a href="{% url 'dashboard_app:home' %}" class="nav-link">Home</a></li>
+      <li><a href="{% url 'dashboard_app:dashboard' %}" class="nav-link">Dashboard</a></li>
+      <li><a href="{% url 'attendance_app:attendance' %}" class="nav-link">Attendance</a></li>
+      <li><a href="{% url 'assignments_app:assignments' %}" class="nav-link">Assignments</a></li>
+      <li><a href="{% url 'planner_app:planner' %}" class="nav-link active">Study Planner</a></li>
+      <li><a href="{% url 'notes_app:notes' %}" class="nav-link">Notes</a></li>
+      <li><a href="{% url 'calendar_app:calendar' %}" class="nav-link">Calendar</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <div class="notification-box" id="bellBtn"><i class="fa-regular fa-bell"></i></div>
+    <div class="profile-container">
+      <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}</button>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-header"><h3>{{ user.first_name }} {{ user.last_name }}</h3><p>{{ user.email }}</p></div>
+        <hr>
+        <form method="POST" action="{% url 'auth_app:logout' %}">{% csrf_token %}<button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:10px 16px;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button></form>
+      </div>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}<div data-flash-messages style="position:fixed;top:72px;right:20px;z-index:9999;min-width:280px;">{% for message in messages %}<div style="background:{% if message.tags == 'error' %}#fef2f2{% else %}#f0fdf4{% endif %};color:{% if message.tags == 'error' %}#dc2626{% else %}#16a34a{% endif %};border:1px solid {% if message.tags == 'error' %}#fecaca{% else %}#bbf7d0{% endif %};padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:14px;font-weight:500;">{{ message }}</div>{% endfor %}</div>{% endif %}
+
+<div id="page-planner" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <div class="page-header-icon icon-emerald"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg></div>
+      <div class="page-header-text"><h1>Study Planner</h1><p>Plan your study sessions, set goals and stay on top of your schedule.</p></div>
+      <button class="action-btn btn-emerald" style="margin-left:auto" id="addSessionBtn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Session</button>
+    </div>
+
+    <div class="page-tabs tabs-emerald" id="tabs-planner">
+      <button class="page-tab active" onclick="switchTab('planner','today',this)">Today</button>
+      <button class="page-tab" onclick="switchTab('planner','weekly',this)">Weekly</button>
+      <button class="page-tab" onclick="switchTab('planner','goals',this)">Goals</button>
+      <button class="page-tab" onclick="switchTab('planner','upcoming',this)">Upcoming</button>
+    </div>
+
+    <!-- Today Tab -->
+    <div class="tab-panel active" id="planner-today">
+      <div class="summary-row">
+        <div class="sum-chip"><span class="s-val" style="color:#10b981">{{ sessions_today_count }}</span><span class="s-lbl">Sessions Today</span></div>
+        <div class="sum-chip"><span class="s-val" style="color:#7c3aed">{{ planned_hours_today }}h</span><span class="s-lbl">Planned Hours</span></div>
+        <div class="sum-chip"><span class="s-val" style="color:#0ea5e9">{{ goals_count }}</span><span class="s-lbl">Goals Active</span></div>
+      </div>
+      {% if goals %}
+      <div class="section-box">
+        <div class="section-box-header">Goal Progress</div>
+        <div style="padding:18px 22px;">
+          {% for goal in goals %}
+          <div class="prog-wrap">
+            <div class="prog-label"><span>{{ goal.title }}</span><span>{{ goal.current_value }}/{{ goal.target_value }} {{ goal.unit }}</span></div>
+            <div class="prog-track"><div class="prog-fill prog-emerald" style="width:{{ goal.progress_percent }}%"></div></div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      <div class="section-box">
+        <div class="section-box-header">Today's Schedule — {{ today|date:"M d" }} <span class="sub">{{ sessions_today_count }} sessions</span></div>
+        {% for session in today_sessions %}
+        <div class="schedule-item">
+          <div class="schedule-time">{{ session.start_time|time:"g:i A" }}</div>
+          <div class="schedule-bar" style="background:{{ session.subject.color_hex|default:'#7c3aed' }}"></div>
+          <div class="schedule-info">
+            <h4>{% if session.subject %}{{ session.subject.name }} – {% endif %}{{ session.topic }}</h4>
+            <p>Duration: {{ session.duration_hours }}h</p>
+          </div>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+            <span class="badge {% if session.status == 'done' %}badge-green{% elif session.status == 'in_progress' %}badge-yellow{% else %}badge-gray{% endif %}">{{ session.get_status_display }}</span>
+            <form method="POST" action="{% url 'planner_app:delete_session' session.pk %}">{% csrf_token %}<button type="submit" style="background:#fef2f2;color:#dc2626;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;" onclick="return confirm('Remove?')">✕</button></form>
+          </div>
+        </div>
+        {% empty %}
+        <p style="text-align:center;color:#9ca3af;padding:30px;">No sessions scheduled for today. Add one!</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Weekly Tab -->
+    <div class="tab-panel" id="planner-weekly">
+      <div class="section-box">
+        <div class="section-box-header">This Week's Schedule</div>
+        <table class="data-table">
+          <thead><tr><th>Day</th><th>Subject</th><th>Topic</th><th>Duration</th><th>Status</th></tr></thead>
+          <tbody>
+            {% for session in weekly_sessions %}
+            <tr><td>{{ session.date|date:"D M d" }}</td><td>{{ session.subject.name|default:"General" }}</td><td>{{ session.topic }}</td><td>{{ session.duration_hours }}h</td><td><span class="badge {% if session.status == 'done' %}badge-green{% elif session.status == 'in_progress' %}badge-yellow{% else %}badge-gray{% endif %}">{{ session.get_status_display }}</span></td></tr>
+            {% empty %}<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:20px;">No sessions this week.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Goals Tab -->
+    <div class="tab-panel" id="planner-goals">
+      <div class="section-box">
+        <div class="section-box-header">Study Goals <span class="sub"><button id="addGoalBtn" style="background:#10b981;color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:12px;cursor:pointer;font-weight:600;">+ Add Goal</button></span></div>
+        <div style="padding:18px 22px;">
+          {% for goal in goals %}
+          <div class="prog-wrap">
+            <div class="prog-label"><span>{{ goal.title }}</span><span>{{ goal.current_value }}/{{ goal.target_value }} {{ goal.unit }} ({{ goal.progress_percent }}%)</span></div>
+            <div class="prog-track"><div class="prog-fill prog-emerald" style="width:{{ goal.progress_percent }}%"></div></div>
+          </div>
+          {% empty %}<p style="text-align:center;color:#9ca3af;padding:20px;">No goals yet. Set your first study goal!</p>{% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Tab -->
+    <div class="tab-panel" id="planner-upcoming">
+      <div class="section-box">
+        <div class="section-box-header">Upcoming Sessions <span class="sub">Next 7 days</span></div>
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Subject</th><th>Topic</th><th>Duration</th></tr></thead>
+          <tbody>
+            {% for session in upcoming_sessions %}
+            <tr><td>{{ session.date|date:"M d" }}</td><td>{{ session.subject.name|default:"General" }}</td><td>{{ session.topic }}</td><td>{{ session.duration_hours }}h</td></tr>
+            {% empty %}<tr><td colspan="4" style="text-align:center;color:#9ca3af;padding:20px;">No upcoming sessions.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Session Modal -->
+<div id="addSessionModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:440px;margin:20px;">
+    <h3 style="font-size:18px;font-weight:700;color:#1f2937;margin-bottom:20px;">Add Study Session</h3>
+    <form method="POST" action="{% url 'planner_app:add_session' %}">
+      {% csrf_token %}
+      <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Topic</label><input type="text" name="topic" placeholder="e.g. Calculus Review" required style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Subject</label>
+        <select name="subject_id" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;">
+          <option value="">No subject</option>
+          {% for subject in subjects %}<option value="{{ subject.pk }}">{{ subject.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:14px;">
+        <div style="flex:1;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Date</label><input type="date" name="date" value="{{ today }}" required style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+        <div style="flex:1;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Time</label><input type="time" name="start_time" required style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      </div>
+      <div style="margin-bottom:20px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Duration (hours)</label><input type="number" name="duration" placeholder="e.g. 1.5" step="0.5" min="0.5" max="8" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      <div style="display:flex;gap:10px;">
+        <button type="button" id="closeSessionModal" style="flex:1;padding:12px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;">Cancel</button>
+        <button type="submit" style="flex:1;padding:12px;background:#10b981;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">Add Session</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Goal Modal -->
+<div id="addGoalModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:400px;margin:20px;">
+    <h3 style="font-size:18px;font-weight:700;color:#1f2937;margin-bottom:20px;">Add Study Goal</h3>
+    <form method="POST" action="{% url 'planner_app:add_goal' %}">
+      {% csrf_token %}
+      <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Goal Title</label><input type="text" name="title" placeholder="e.g. Study 20 hours this week" required style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      <div style="display:flex;gap:12px;margin-bottom:20px;">
+        <div style="flex:1;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Target</label><input type="number" name="target" placeholder="20" step="0.5" min="1" required style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+        <div style="flex:1;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Unit</label><input type="text" name="unit" placeholder="hours" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button type="button" id="closeGoalModal" style="flex:1;padding:12px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;">Cancel</button>
+        <button type="submit" style="flex:1;padding:12px;background:#10b981;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">Add Goal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'shared/shared.js' %}"></script>
+<script src="{% static 'planner/planner.js' %}"></script>
+<script>
+  const sessBtn = document.getElementById('addSessionBtn');
+  const sessModal = document.getElementById('addSessionModal');
+  const closeSessModal = document.getElementById('closeSessionModal');
+  if(sessBtn) sessBtn.onclick = () => { sessModal.style.display = 'flex'; };
+  if(closeSessModal) closeSessModal.onclick = () => { sessModal.style.display = 'none'; };
+
+  const goalBtn = document.getElementById('addGoalBtn');
+  const goalModal = document.getElementById('addGoalModal');
+  const closeGoalModal = document.getElementById('closeGoalModal');
+  if(goalBtn) goalBtn.onclick = () => { goalModal.style.display = 'flex'; };
+  if(closeGoalModal) closeGoalModal.onclick = () => { goalModal.style.display = 'none'; };
+</script>
+</body>
+</html>

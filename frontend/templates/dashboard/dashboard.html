@@ -1,0 +1,217 @@
+{% load static studysync_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudySync - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="{% static 'dashboard/dashboard.css' %}"/>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="{% url 'dashboard_app:home' %}" class="logo">
+      <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/><path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/></svg></div>
+      <span class="logo-text">StudySync</span>
+    </a>
+    <div class="nav-divider"></div>
+    <ul class="nav-links">
+      <li><a href="{% url 'dashboard_app:home' %}" class="nav-link">Home</a></li>
+      <li><a href="{% url 'dashboard_app:dashboard' %}" class="nav-link active">Dashboard</a></li>
+      <li><a href="{% url 'attendance_app:attendance' %}" class="nav-link">Attendance</a></li>
+      <li><a href="{% url 'assignments_app:assignments' %}" class="nav-link">Assignments</a></li>
+      <li><a href="{% url 'planner_app:planner' %}" class="nav-link">Study Planner</a></li>
+      <li><a href="{% url 'notes_app:notes' %}" class="nav-link">Notes</a></li>
+      <li><a href="{% url 'calendar_app:calendar' %}" class="nav-link">Calendar</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <div class="notification-box" id="bellBtn">
+      <i class="fa-regular fa-bell"></i>
+      {% if overdue_count %}<span class="notification-count">{{ overdue_count }}</span>{% endif %}
+    </div>
+    <div class="profile-container">
+      <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</button>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-header"><h3>{{ user.first_name }} {{ user.last_name }}</h3><p>{{ user.email }}</p></div>
+        <hr>
+        <a href="{% url 'setup_app:setup' %}" class="dropdown-option"><i class="fa-solid fa-gear"></i> Setup Workspace</a>
+        <form method="POST" action="{% url 'auth_app:logout' %}">{% csrf_token %}<button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:10px 16px;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button></form>
+      </div>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}
+<div data-flash-messages style="position:fixed;top:72px;right:20px;z-index:9999;min-width:280px;">
+  {% for message in messages %}<div style="background:{% if message.tags == 'error' %}#fef2f2{% else %}#f0fdf4{% endif %};color:{% if message.tags == 'error' %}#dc2626{% else %}#16a34a{% endif %};border:1px solid {% if message.tags == 'error' %}#fecaca{% else %}#bbf7d0{% endif %};padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:14px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,.08);">{{ message }}</div>{% endfor %}
+</div>
+{% endif %}
+
+<div id="page-dashboard" class="page">
+  <div class="inner-page">
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card stat-violet">
+        <div class="stat-icon"><i class="fa-solid fa-chart-pie"></i></div>
+        <div class="stat-body"><span class="stat-val">{{ attendance_pct }}%</span><span class="stat-lbl">Attendance</span></div>
+      </div>
+      <div class="stat-card stat-sky">
+        <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
+        <div class="stat-body"><span class="stat-val">{{ study_hours_week }}h</span><span class="stat-lbl">Study This Week</span></div>
+      </div>
+      <div class="stat-card stat-amber">
+        <div class="stat-icon"><i class="fa-solid fa-list-check"></i></div>
+        <div class="stat-body"><span class="stat-val">{{ pending_count }}</span><span class="stat-lbl">Pending Tasks</span></div>
+      </div>
+      <div class="stat-card stat-rose">
+        <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="stat-body"><span class="stat-val">{{ due_this_week }}</span><span class="stat-lbl">Due This Week</span></div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-row">
+      <!-- Study Hours Chart -->
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <h3>Study Hours This Week</h3>
+          <span class="chart-badge">Weekly</span>
+        </div>
+        <canvas id="studyHoursChart" height="180"></canvas>
+      </div>
+
+      <!-- Attendance Chart -->
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <h3>Attendance by Subject</h3>
+          <span class="chart-badge">Overview</span>
+        </div>
+        <canvas id="attendanceChart" height="180"></canvas>
+      </div>
+    </div>
+
+    <!-- Attendance by Subject -->
+    <div class="section-box">
+      <div class="section-box-header">Subject Attendance Status</div>
+      <div style="padding:18px 22px;">
+        {% for stat in attendance_by_subject %}
+        <div class="prog-wrap">
+          <div class="prog-label">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <span class="subject-dot" style="background:{{ stat.subject.color_hex }}"></span>
+              {{ stat.subject.name }}
+            </span>
+            <span style="display:flex;align-items:center;gap:10px;">
+              {% if stat.status == 'safe' %}<span class="badge-safe">Safe</span>{% else %}<span class="badge-crit">Critical</span>{% endif %}
+              <span>{{ stat.pct }}%</span>
+            </span>
+          </div>
+          <div class="prog-track">
+            <div class="prog-fill" style="width:{{ stat.pct }}%;background:{{ stat.subject.color_hex }}"></div>
+            <div class="prog-threshold"></div>
+          </div>
+          {% if stat.status == 'safe' %}
+          <div class="stat-hint safe">✓ You can miss {{ stat.can_miss }} more class{{ stat.can_miss|pluralize }}</div>
+          {% else %}
+          <div class="stat-hint crit">⚠ Attend {{ stat.must_attend }} more class{{ stat.must_attend|pluralize }} to reach 75%</div>
+          {% endif %}
+        </div>
+        {% empty %}
+        <p style="text-align:center;color:#9ca3af;padding:24px;">No subjects added yet. <a href="{% url 'setup_app:setup' %}">Setup your workspace →</a></p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Upcoming Assignments -->
+    {% if upcoming_assignments %}
+    <div class="section-box">
+      <div class="section-box-header">Upcoming Deadlines <span class="sub">Next 7 days</span></div>
+      {% for a in upcoming_assignments %}
+      <div class="list-item">
+        <span class="list-dot" style="background:{% if a.due_date == today %}#ef4444{% else %}#f59e0b{% endif %}"></span>
+        <div class="list-item-text">
+          <h4>{{ a.title }}</h4>
+          <p>{{ a.subject.name|default:"No subject" }}</p>
+        </div>
+        <div class="list-item-right">
+          <span class="badge {% if a.due_date == today %}badge-red{% else %}badge-yellow{% endif %}">{{ a.due_date|date:"M d" }}</span>
+        </div>
+      </div>
+      {% endfor %}
+      <div style="padding:10px 20px;"><a href="{% url 'assignments_app:assignments' %}" style="font-size:13px;color:#7c3aed;font-weight:600;text-decoration:none;">View all assignments →</a></div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+// Study Hours Chart
+const hoursCtx = document.getElementById('studyHoursChart').getContext('2d');
+new Chart(hoursCtx, {
+  type: 'bar',
+  data: {
+    labels: {{ days|safe }},
+    datasets: [{
+      label: 'Hours Studied',
+      data: {{ hours_per_day|safe }},
+      backgroundColor: 'rgba(124,58,237,0.15)',
+      borderColor: '#7c3aed',
+      borderWidth: 2,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f3f4f6' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Attendance Chart
+const attCtx = document.getElementById('attendanceChart').getContext('2d');
+new Chart(attCtx, {
+  type: 'doughnut',
+  data: {
+    labels: [{% for s in attendance_by_subject %}'{{ s.subject.name }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+    datasets: [{
+      data: [{% for s in attendance_by_subject %}{{ s.pct }}{% if not forloop.last %},{% endif %}{% endfor %}],
+      backgroundColor: [{% for s in attendance_by_subject %}'{{ s.subject.color_hex }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'right', labels: { font: { size: 11 }, boxWidth: 14 } }
+    },
+    cutout: '70%'
+  }
+});
+
+// Profile dropdown
+const profileBtn = document.getElementById('profileBtn');
+const profileDropdown = document.getElementById('profileDropdown');
+if(profileBtn) {
+  profileBtn.addEventListener('click', () => {
+    profileDropdown.classList.toggle('open');
+  });
+  document.addEventListener('click', (e) => {
+    if(!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+      profileDropdown.classList.remove('open');
+    }
+  });
+}
+</script>
+<script src="{% static 'shared/shared.js' %}"></script>
+<script src="{% static 'dashboard/dashboard.js' %}"></script>
+</body>
+</html>

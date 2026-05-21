@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudySync - Dashboard</title>
+  <link rel="stylesheet" href="{% static 'auth/login.css' %}">
+  <style>
+    .dashboard-card {
+      text-align: center;
+    }
+    .user-avatar {
+      width: 80px; height: 80px;
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 32px;
+      color: #fff;
+      font-weight: 700;
+    }
+    .user-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+    .user-email {
+      font-size: 14px;
+      color: #9ca3af;
+      margin-bottom: 24px;
+    }
+    .dashboard-info {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .dashboard-info h3 {
+      font-size: 14px;
+      color: #5b21b6;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 14px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: #6b7280; }
+    .info-value { color: #1f2937; font-weight: 600; }
+    .logout-btn {
+      width: 100%;
+      padding: 13px;
+      background: #ef4444;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .logout-btn:hover { background: #dc2626; transform: translateY(-1px); }
+    .logout-btn:active { transform: translateY(0); }
+    .coming-soon {
+      margin-top: 16px;
+      padding: 14px;
+      background: #faf5ff;
+      border: 1.5px dashed #c4b5fd;
+      border-radius: 12px;
+      color: #7c3aed;
+      font-size: 13px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card dashboard-card">
+  <!-- Logo -->
+  <div class="logo-icon">
+    <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+  </div>
+  <div class="logo">
+    <h1>StudySync</h1>
+    <p>Your Academic Life Dashboard</p>
+  </div>
+
+  <!-- Django Messages -->
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- User Info -->
+  <div class="user-avatar">
+    {{ user.first_name.0 }}{{ user.last_name.0 }}
+  </div>
+  <div class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
+  <div class="user-email">{{ user.email }}</div>
+
+  <div class="dashboard-info">
+    <h3>Account Details</h3>
+    <div class="info-row">
+      <span class="info-label">Username</span>
+      <span class="info-value">{{ user.username }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Email</span>
+      <span class="info-value">{{ user.email }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Member Since</span>
+      <span class="info-value">{{ user.date_joined|date:"M d, Y" }}</span>
+    </div>
+  </div>
+
+  <div class="coming-soon">
+    🚀 Full dashboard features coming soon!
+  </div>
+
+  <form method="POST" action="{% url 'auth_app:logout' %}" style="margin-top: 16px;">
+    {% csrf_token %}
+    <button type="submit" class="logout-btn">Logout</button>
+  </form>
+</div>
+
+<script src="{% static 'auth/login.js' %}"></script>
+
+</body>
+</html>

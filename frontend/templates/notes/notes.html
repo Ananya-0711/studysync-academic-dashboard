@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudySync - Notes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'notes/notes.css' %}"/>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="{% url 'dashboard_app:home' %}" class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/><path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/></svg></div><span class="logo-text">StudySync</span></a>
+    <div class="nav-divider"></div>
+    <ul class="nav-links">
+      <li><a href="{% url 'dashboard_app:home' %}" class="nav-link">Home</a></li>
+      <li><a href="{% url 'dashboard_app:dashboard' %}" class="nav-link">Dashboard</a></li>
+      <li><a href="{% url 'attendance_app:attendance' %}" class="nav-link">Attendance</a></li>
+      <li><a href="{% url 'assignments_app:assignments' %}" class="nav-link">Assignments</a></li>
+      <li><a href="{% url 'planner_app:planner' %}" class="nav-link">Study Planner</a></li>
+      <li><a href="{% url 'notes_app:notes' %}" class="nav-link active">Notes</a></li>
+      <li><a href="{% url 'calendar_app:calendar' %}" class="nav-link">Calendar</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <div class="notification-box" id="bellBtn"><i class="fa-regular fa-bell"></i></div>
+    <div class="profile-container">
+      <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}</button>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-header"><h3>{{ user.first_name }} {{ user.last_name }}</h3><p>{{ user.email }}</p></div>
+        <hr>
+        <form method="POST" action="{% url 'auth_app:logout' %}">{% csrf_token %}<button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:10px 16px;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button></form>
+      </div>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}<div data-flash-messages style="position:fixed;top:72px;right:20px;z-index:9999;min-width:280px;">{% for message in messages %}<div style="background:{% if message.tags == 'error' %}#fef2f2{% else %}#f0fdf4{% endif %};color:{% if message.tags == 'error' %}#dc2626{% else %}#16a34a{% endif %};border:1px solid {% if message.tags == 'error' %}#fecaca{% else %}#bbf7d0{% endif %};padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:14px;font-weight:500;">{{ message }}</div>{% endfor %}</div>{% endif %}
+
+<div id="page-notes" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <div class="page-header-icon icon-amber"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+      <div class="page-header-text"><h1>Notes</h1><p>Capture, organise and review subject-wise notes all in one place.</p></div>
+      <button class="action-btn btn-amber" style="margin-left:auto" id="addNoteBtn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Note</button>
+    </div>
+
+    <div class="page-tabs tabs-amber" id="tabs-notes">
+      <button class="page-tab active" onclick="switchTab('notes','all',this)">All Notes</button>
+      <button class="page-tab" onclick="switchTab('notes','pinned',this)">Pinned</button>
+      <button class="page-tab" onclick="switchTab('notes','subjects',this)">By Subject</button>
+      <button class="page-tab" onclick="switchTab('notes','recent',this)">Recent</button>
+    </div>
+
+    <!-- All Notes -->
+    <div class="tab-panel active" id="notes-all">
+      <div class="summary-row">
+        <div class="sum-chip"><span class="s-val" style="color:#f59e0b">{{ total_count }}</span><span class="s-lbl">Total Notes</span></div>
+        <div class="sum-chip"><span class="s-val" style="color:#7c3aed">{{ subject_count }}</span><span class="s-lbl">Subjects</span></div>
+        <div class="sum-chip"><span class="s-val" style="color:#0ea5e9">{{ pinned_count }}</span><span class="s-lbl">Pinned</span></div>
+        <div class="sum-chip"><span class="s-val" style="color:#10b981">{{ this_week_count }}</span><span class="s-lbl">This Week</span></div>
+      </div>
+      {% if pinned %}
+      <div class="section-box">
+        <div class="section-box-header">Pinned Notes</div>
+        <div class="notes-grid">
+          {% for note in pinned %}
+          <div class="note-card">
+            <h4>{{ note.title }}</h4>
+            <p>{{ note.content|truncatechars:120 }}</p>
+            <div class="note-card-footer">
+              <span>{{ note.subject.name|default:"General" }}</span>
+              <span>{{ note.updated_at|date:"M d" }}</span>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:8px;">
+              <form method="POST" action="{% url 'notes_app:toggle_pin' note.pk %}">{% csrf_token %}<button type="submit" style="background:#fef3c7;color:#f59e0b;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;">📌 Unpin</button></form>
+              <form method="POST" action="{% url 'notes_app:delete_note' note.pk %}">{% csrf_token %}<button type="submit" style="background:#fef2f2;color:#dc2626;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;" onclick="return confirm('Delete note?')">✕ Delete</button></form>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      <div class="section-box">
+        <div class="section-box-header">All Notes <span class="sub">By subject</span></div>
+        <table class="data-table">
+          <thead><tr><th>Title</th><th>Subject</th><th>Tags</th><th>Updated</th><th>Actions</th></tr></thead>
+          <tbody>
+            {% for note in all_notes %}
+            <tr>
+              <td>{{ note.title }}</td>
+              <td>{{ note.subject.name|default:"General" }}</td>
+              <td>{% for tag in note.tag_list %}<span class="tag">{{ tag }}</span> {% empty %}—{% endfor %}</td>
+              <td>{{ note.updated_at|date:"M d" }}</td>
+              <td>
+                <form method="POST" action="{% url 'notes_app:toggle_pin' note.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" style="background:{% if note.is_pinned %}#fef3c7{% else %}#f3f4f6{% endif %};color:{% if note.is_pinned %}#f59e0b{% else %}#6b7280{% endif %};border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;">📌</button></form>
+                <form method="POST" action="{% url 'notes_app:delete_note' note.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" style="background:#fef2f2;color:#dc2626;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;" onclick="return confirm('Delete?')">✕</button></form>
+              </td>
+            </tr>
+            {% empty %}<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:20px;">No notes yet. Create your first note!</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pinned Tab -->
+    <div class="tab-panel" id="notes-pinned">
+      <div class="section-box">
+        <div class="section-box-header">Pinned Notes <span class="sub">{{ pinned_count }} pinned</span></div>
+        <table class="data-table">
+          <thead><tr><th>Title</th><th>Subject</th><th>Updated</th></tr></thead>
+          <tbody>
+            {% for note in pinned %}<tr><td>{{ note.title }}</td><td>{{ note.subject.name|default:"General" }}</td><td>{{ note.updated_at|date:"M d" }}</td></tr>{% empty %}<tr><td colspan="3" style="text-align:center;color:#9ca3af;padding:20px;">No pinned notes.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- By Subject Tab -->
+    <div class="tab-panel" id="notes-subjects">
+      <div class="section-box">
+        <div class="section-box-header">Notes by Subject <span class="sub">{{ subject_count }} subjects</span></div>
+        <table class="data-table">
+          <thead><tr><th>Subject</th><th>Notes</th><th>Last Updated</th></tr></thead>
+          <tbody>
+            {% for item in notes_by_subject %}<tr><td>{{ item.subject.name }}</td><td>{{ item.count }}</td><td>{{ item.last_updated|date:"M d" }}</td></tr>{% empty %}<tr><td colspan="3" style="text-align:center;color:#9ca3af;padding:20px;">No notes by subject yet.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Tab -->
+    <div class="tab-panel" id="notes-recent">
+      <div class="section-box">
+        <div class="section-box-header">Recently Updated <span class="sub">Last 7 days</span></div>
+        <table class="data-table">
+          <thead><tr><th>Title</th><th>Subject</th><th>Tags</th><th>Updated</th></tr></thead>
+          <tbody>
+            {% for note in recent %}<tr><td>{{ note.title }}</td><td>{{ note.subject.name|default:"General" }}</td><td>{% for tag in note.tag_list %}<span class="tag">{{ tag }}</span> {% endfor %}</td><td>{{ note.updated_at|date:"M d" }}</td></tr>{% empty %}<tr><td colspan="4" style="text-align:center;color:#9ca3af;padding:20px;">No recent notes.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Note Modal -->
+<div id="addNoteModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:480px;margin:20px;">
+    <h3 style="font-size:18px;font-weight:700;color:#1f2937;margin-bottom:20px;">New Note</h3>
+    <form method="POST" action="{% url 'notes_app:add_note' %}">
+      {% csrf_token %}
+      <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Title</label><input type="text" name="title" placeholder="Note title" required style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Subject</label>
+        <select name="subject_id" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;">
+          <option value="">General / No subject</option>
+          {% for subject in subjects %}<option value="{{ subject.pk }}">{{ subject.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Content</label><textarea name="content" placeholder="Write your note..." rows="4" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;resize:vertical;box-sizing:border-box;"></textarea></div>
+      <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Tags (comma-separated)</label><input type="text" name="tags" placeholder="e.g. calculus, integration" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;"/></div>
+      <div style="margin-bottom:20px;"><label style="display:flex;align-items:center;gap:8px;font-size:14px;color:#374151;cursor:pointer;"><input type="checkbox" name="is_pinned"/> Pin this note</label></div>
+      <div style="display:flex;gap:10px;">
+        <button type="button" id="closeNoteModal" style="flex:1;padding:12px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;">Cancel</button>
+        <button type="submit" style="flex:1;padding:12px;background:#f59e0b;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">Save Note</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'shared/shared.js' %}"></script>
+<script src="{% static 'notes/notes.js' %}"></script>
+<script>
+  const addNoteBtn = document.getElementById('addNoteBtn');
+  const noteModal = document.getElementById('addNoteModal');
+  const closeNoteModal = document.getElementById('closeNoteModal');
+  if(addNoteBtn) addNoteBtn.onclick = () => { noteModal.style.display = 'flex'; };
+  if(closeNoteModal) closeNoteModal.onclick = () => { noteModal.style.display = 'none'; };
+</script>
+</body>
+</html>
