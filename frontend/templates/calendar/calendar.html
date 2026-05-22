@@ -11,7 +11,7 @@
 <body>
 <nav class="navbar">
   <div class="nav-left">
-    <a href="{% url 'dashboard_app:home' %}" class="logo"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/><path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/></svg></div><span class="logo-text">StudySync</span></a>
+    <a href="{% url 'dashboard_app:home' %}" class="logo" onclick="event.preventDefault(); openAboutModal();"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/><path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" opacity="0.8"/></svg></div><span class="logo-text">StudySync</span></a>
     <div class="nav-divider"></div>
     <ul class="nav-links">
       <li><a href="{% url 'dashboard_app:home' %}" class="nav-link">Home</a></li>
@@ -26,9 +26,15 @@
   <div class="nav-right">
     <div class="notification-box" id="bellBtn"><i class="fa-regular fa-bell"></i></div>
     <div class="profile-container">
-      <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}</button>
+      <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</button>
       <div class="profile-dropdown" id="profileDropdown">
         <div class="profile-header"><h3>{{ user.first_name }} {{ user.last_name }}</h3><p>{{ user.email }}</p></div>
+        <div class="dropdown-option"><i class="fa-solid fa-graduation-cap"></i>{{ user.username }}</div>
+        <div class="dropdown-option"><i class="fa-regular fa-calendar"></i>Joined {{ user.date_joined|date:"M Y" }}</div>
+        <a href="{% url 'setup_app:setup' %}" class="dropdown-option" style="text-decoration:none;"><i class="fa-solid fa-gear"></i>Setup Workspace</a>
+        <hr>
+        <div class="theme-title">Appearance Mode</div>
+        <div class="theme-buttons"><button id="lightMode">Light</button><button id="darkMode">Dark</button></div>
         <hr>
         <form method="POST" action="{% url 'auth_app:logout' %}">{% csrf_token %}<button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:10px 16px;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button></form>
       </div>
@@ -62,7 +68,9 @@
         <div class="sum-chip"><span class="s-val" style="color:#0ea5e9">{{ today|date:"M" }}</span><span class="s-lbl">Current Month</span></div>
       </div>
       <div class="section-box">
-        <div class="section-box-header">{{ month_name }}</div>
+        <div class="section-box-header">
+            {{ month_name }}
+        </div>
         <div class="cal-grid" id="calendarGrid">
           <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:16px;">
             {% for day_name in "Mon,Tue,Wed,Thu,Fri,Sat,Sun"|split:"," %}
@@ -178,6 +186,121 @@
       </div>
     </form>
   </div>
+</div>
+
+<!-- ABOUT MODAL -->
+<div class="about-overlay" id="aboutOverlay">
+  <div class="about-modal">
+    <button class="about-close" onclick="closeAboutModal()">✕</button>
+    <div class="about-header">
+      <div class="about-badge">About-StudySync</div>
+      <h2>Your Academic Life, Finally Organized.</h2>
+      <p>Attendance, assignments, notes, deadlines — everything in one clean and stress-free workspace.</p>
+    </div>
+    <div class="info-tabs">
+      <button class="info-tab active" onclick="switchInfoTab('about', this)">About</button>
+      <button class="info-tab" onclick="switchInfoTab('works', this)">How It Works</button>
+    </div>
+    <div class="info-page active" id="aboutPage">
+      <div class="about-section-title">PLATFORM OVERVIEW</div>
+      <div class="about-content">
+       <div class="about-left">
+        <div class="about-card">
+          <h3>📘 What is StudySync?</h3>
+          <p>StudySync is a student-focused productivity and collaboration platform designed to simplify academic life.</p>
+          <p>From managing study schedules and organizing coursework to collaborating with peers and tracking progress, StudySync brings essential academic tools together into one streamlined workspace.</p>
+          <p>Our goal is to help students stay focused, reduce academic stress, and build more consistent learning habits through a clean and intuitive experience.</p>
+        </div>
+        <div class="about-card">
+          <h3>🎯 Why Students Love It</h3>
+          <p>Built to make student life simpler, faster, and way less chaotic. Study smarter, stay organized, and never miss what matters.</p>
+           <p>Instead of switching between multiple apps and scattered notes, StudySync provides a centralized environment where students can plan tasks, manage deadlines, and collaborate efficiently.</p>
+        </div>
+      </div>
+      <div class="about-right">
+         <div class="about-section-title no-line">STUDENT EXPERIENCE</div>
+        <div class="feature-box"><span>📊</span>Smart Dashboard</div>
+        <div class="feature-box"><span>✅</span>Attendance Tracking</div>
+        <div class="feature-box"><span>📝</span>Assignment Manager</div>
+        <div class="feature-box"><span>📚</span>Notes Organizer</div>
+        <div class="feature-box"><span>📅</span>Academic Calendar</div>
+        <div class="feature-box"><span>⏱</span>Study Planner</div>
+        <div class="feature-box"><span>🔔</span>Smart Alerts</div>
+        <div class="about-mini-quote">
+          "Built for students who say 'I'll start studying tomorrow' every day."
+        </div>
+      </div>
+    </div>
+    <div class="about-footer">StudySync — Learn Smarter. Stress Less. 🚀</div>
+  </div>
+</div>
+</div>
+
+<div class="info-page" id="worksPage" style="display:none;">
+  <div class="journey-header">
+    <h1>Your StudySync Journey</h1>
+    <p>Discover how StudySync helps students stay organized, productive, and academically focused through a smarter academic workflow.</p>
+  </div>
+  <div class="journey-container">
+    <div class="journey-item featured">
+      <div class="journey-number">01</div>
+      <div class="journey-card">
+        <div class="journey-card-top"><div><span class="journey-badge">START HERE</span><h2>Create Your Account</h2></div><span class="journey-icon">👤</span></div>
+        <div class="journey-card-body"><p>Create your personalized StudySync workspace and access all academic productivity tools from one centralized platform.</p></div>
+      </div>
+    </div>
+    <div class="journey-item">
+      <div class="journey-number">02</div>
+      <div class="journey-card">
+        <div class="journey-card-top"><h2>Complete Your Setup</h2><span class="journey-icon">⚙️</span></div>
+        <div class="journey-card-body"><p>Add subjects, schedules, semester details, and personalize your dashboard experience.</p></div>
+      </div>
+    </div>
+    <div class="journey-item">
+      <div class="journey-number">03</div>
+      <div class="journey-card">
+        <div class="journey-card-top"><h2>Track Attendance</h2><span class="journey-icon">✅</span></div>
+        <div class="journey-card-body"><p>Monitor attendance percentages, maintain records, and stay updated with academic requirements.</p></div>
+      </div>
+    </div>
+    <div class="journey-item">
+      <div class="journey-number">04</div>
+      <div class="journey-card">
+        <div class="journey-card-top"><h2>Manage Assignments</h2><span class="journey-icon">📝</span></div>
+        <div class="journey-card-body"><p>Organize coursework, deadlines, and assignment submissions efficiently.</p></div>
+      </div>
+    </div>
+    <div class="journey-item">
+      <div class="journey-number">05</div>
+      <div class="journey-card">
+        <div class="journey-card-top"><h2>Organize Notes</h2><span class="journey-icon">📚</span></div>
+        <div class="journey-card-body"><p>Keep class notes structured and accessible for revision and collaborative learning.</p></div>
+      </div>
+    </div>
+    <div class="journey-item">
+      <div class="journey-number">06</div>
+      <div class="journey-card">
+        <div class="journey-card-top"><h2>Plan Study Sessions</h2><span class="journey-icon">🧠</span></div>
+        <div class="journey-card-body"><p>Build productive study schedules and maintain focus through smart planning tools.</p></div>
+      </div>
+    </div>
+    <div class="journey-item">
+      <div class="journey-number">07</div>
+      <div class="journey-card">
+        <div class="journey-card-top"><h2>Stay Synced with Calendar</h2><span class="journey-icon">📅</span></div>
+        <div class="journey-card-body"><p>Track exams, events, submissions, and academic milestones using the calendar.</p></div>
+      </div>
+    </div>
+    <div class="journey-item">
+      <div class="journey-number">08</div>
+      <div class="journey-card">
+        <div class="journey-card-top"><h2>Achieve Better Productivity</h2><span class="journey-icon">⭐</span></div>
+        <div class="journey-card-body"><p>Stay consistent, reduce stress, and improve your academic workflow daily.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 </div>
 
 <script src="{% static 'shared/shared.js' %}"></script>

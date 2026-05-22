@@ -30,6 +30,14 @@ class Assignment(models.Model):
 
     def save(self, *args, **kwargs):
         # Auto-mark overdue if past due and still pending
-        if self.status == 'pending' and self.due_date < timezone.now().date():
+        d_date = self.due_date
+        if isinstance(d_date, str):
+            from datetime import datetime
+            try:
+                d_date = datetime.strptime(d_date, "%Y-%m-%d").date()
+            except ValueError:
+                pass
+        
+        if self.status == 'pending' and hasattr(d_date, '__lt__') and d_date < timezone.now().date():
             self.status = 'overdue'
         super().save(*args, **kwargs)

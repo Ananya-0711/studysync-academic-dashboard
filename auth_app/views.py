@@ -10,21 +10,24 @@ def login_view(request):
         return redirect('dashboard_app:home')
 
     if request.method == 'POST':
-        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
         password = request.POST.get('password', '').strip()
 
-        if not username or not password:
+        if not email or not password:
             messages.error(request, 'Please fill in all fields.')
             return render(request, 'auth/login.html', {'active_tab': 'login'})
 
-        user = authenticate(request, username=username, password=password)
+        user_obj = User.objects.filter(email__iexact=email).first()
+        user = None
+        if user_obj:
+            user = authenticate(request, username=user_obj.username, password=password)
 
         if user is not None:
             login(request, user)
             messages.success(request, f'Welcome back, {user.first_name or user.username}!')
             return redirect('dashboard_app:home')
         else:
-            messages.error(request, 'Invalid username or password.')
+            messages.error(request, 'Invalid email or password.')
             return render(request, 'auth/login.html', {'active_tab': 'login'})
 
     return render(request, 'auth/login.html', {'active_tab': 'login'})

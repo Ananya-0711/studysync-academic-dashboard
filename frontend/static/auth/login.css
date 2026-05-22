@@ -1,4 +1,4 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+﻿* { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -44,41 +44,6 @@
       font-size: 13px;
       color: #9ca3af;
       margin-top: 4px;
-    }
-
-    /* Django Messages / Alerts */
-    .messages {
-      margin-bottom: 16px;
-    }
-    .alert {
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .alert-error {
-      background: #fef2f2;
-      color: #dc2626;
-      border: 1px solid #fecaca;
-    }
-    .alert-success {
-      background: #f0fdf4;
-      color: #16a34a;
-      border: 1px solid #bbf7d0;
-    }
-    .alert-warning {
-      background: #fffbeb;
-      color: #d97706;
-      border: 1px solid #fde68a;
-    }
-    .alert-info {
-      background: #eff6ff;
-      color: #2563eb;
-      border: 1px solid #bfdbfe;
     }
 
     /* Tabs */
@@ -278,3 +243,4 @@
       min-width: 0;
       overflow: hidden;
     }
+  

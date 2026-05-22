@@ -1,43 +1,66 @@
-// setup.js — Setup page modal and profile dropdown
-function switchTab(page, tabId, btn) {
-  const panels = document.querySelectorAll('.tab-panel');
-  const tabs = btn.closest('.page-tabs').querySelectorAll('.page-tab');
-  panels.forEach(p => p.classList.remove('active'));
-  tabs.forEach(t => t.classList.remove('active'));
-  const target = document.getElementById(`${page}-${tabId}`);
-  if (target) target.classList.add('active');
-  btn.classList.add('active');
+/* ── THEME MODE ── */
+const darkBtn = document.getElementById("darkMode");
+const lightBtn = document.getElementById("lightMode");
+
+if(localStorage.getItem("theme") === "dark"){
+  document.body.classList.add("dark-mode");
+}
+if(darkBtn){
+  darkBtn.onclick = ()=>{
+    document.body.classList.add("dark-mode");
+    localStorage.setItem("theme","dark");
+  };
+}
+if(lightBtn){
+  lightBtn.onclick = ()=>{
+    document.body.classList.remove("dark-mode");
+    localStorage.setItem("theme","light");
+  };
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  // Profile
-  const profileBtn = document.getElementById('profileBtn');
-  const profileDropdown = document.getElementById('profileDropdown');
-  if (profileBtn && profileDropdown) {
-    profileBtn.addEventListener('click', (e) => { e.stopPropagation(); profileDropdown.classList.toggle('open'); });
-    document.addEventListener('click', (e) => { if (!profileDropdown.contains(e.target) && e.target !== profileBtn) profileDropdown.classList.remove('open'); });
+/* ── ABOUT MODAL ── */
+function openAboutModal(){
+  const modal = document.getElementById("aboutOverlay");
+  if(modal){
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
   }
-
-  // Subject modal
-  const addSubjectBtn = document.getElementById('addSubjectBtn');
-  const subjectModal = document.getElementById('subjectModal');
-  const closeSubjectModal = document.getElementById('closeSubjectModal');
-  const cancelSubjectModal = document.getElementById('cancelSubjectModal');
-  if (addSubjectBtn) addSubjectBtn.onclick = () => { subjectModal.classList.add('open'); };
-  if (closeSubjectModal) closeSubjectModal.onclick = () => { subjectModal.classList.remove('open'); };
-  if (cancelSubjectModal) cancelSubjectModal.onclick = () => { subjectModal.classList.remove('open'); };
-
-  // Slot modal
-  const addSlotBtn = document.getElementById('addSlotBtn');
-  const slotModal = document.getElementById('slotModal');
-  const closeSlotModal = document.getElementById('closeSlotModal');
-  const cancelSlotModal = document.getElementById('cancelSlotModal');
-  if (addSlotBtn) addSlotBtn.onclick = () => { slotModal.classList.add('open'); };
-  if (closeSlotModal) closeSlotModal.onclick = () => { slotModal.classList.remove('open'); };
-  if (cancelSlotModal) cancelSlotModal.onclick = () => { slotModal.classList.remove('open'); };
-
-  // Close on overlay click
-  [subjectModal, slotModal].forEach(modal => {
-    if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
-  });
+}
+function closeAboutModal(){
+  const modal = document.getElementById("aboutOverlay");
+  if(modal){
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+}
+window.addEventListener("click",(e)=>{
+  const modal = document.getElementById("aboutOverlay");
+  if(e.target === modal) closeAboutModal();
 });
+document.addEventListener("keydown",(e)=>{
+  if(e.key === "Escape") closeAboutModal();
+});
+function switchInfoTab(page,btn){
+  document.querySelectorAll(".info-page").forEach(infoPage=>{
+    infoPage.style.display = "none";
+  });
+  document.querySelectorAll(".info-tab").forEach(tab=>{
+    tab.classList.remove("active");
+  });
+  const targetPage = document.getElementById(`${page}Page`);
+  if(targetPage) targetPage.style.display = "block";
+  btn.classList.add("active");
+}
+
+/* SAVE BUTTON FEEDBACK */
+const btnSave = document.querySelector('.btn-save');
+if(btnSave) {
+  btnSave.addEventListener('click', () => {
+    btnSave.innerHTML = '<i class="fa-solid fa-circle-check"></i> Saved!';
+    btnSave.style.background = 'linear-gradient(135deg, #059669, #10B981)';
+    setTimeout(() => {
+      btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Semester Setup';
+      btnSave.style.background = '';
+    }, 2200);
+  });
+}
