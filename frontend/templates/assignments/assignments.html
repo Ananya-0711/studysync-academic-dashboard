@@ -70,70 +70,47 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
             <!-- DROPDOWN -->
 
-            <div class="profile-dropdown"
-                id="profileDropdown">
-
+                        <!-- DROPDOWN -->
+            <div class="profile-dropdown" id="profileDropdown">
                 <!-- HEADER -->
-
                 <div class="profile-header">
-
-                    <h3>
-                        {{ user.first_name }} {{ user.last_name }}
-                    </h3>
-
-                    <p>
-                        {{ user.email }}
-                    </p>
-
+                    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                    <p>{{ user.email }}</p>
                 </div>
-
                 <!-- OPTIONS -->
-
                 <div class="dropdown-option">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                    {{ user.username }}
+                    <i class="fa-solid fa-code"></i>
+                    Current Build
                 </div>
-
                 <div class="dropdown-option">
                     <i class="fa-regular fa-calendar"></i>
                     Joined {{ user.date_joined|date:"M Y" }}
                 </div>
-
-                <a href="{% url 'setup_app:setup' %}" class="dropdown-option">
-                    <i class="fa-solid fa-gear"></i>
-                    Setup Workspace
-                </a>
-
-                <hr>
-
-                    <!-- APPEARANCE -->
-
-                    <div class="theme-title">
-
-                        Appearance Mode
-
-                    </div>
-
-                    <div class="theme-buttons">
-
-                      <button id="lightMode">Light</button>
-
-                      <button id="darkMode">Dark</button>
-
-                    </div>
-
-                <hr>
-
-                    <!-- LOGOUT -->
-
-                    <form method="POST" action="{% url 'auth_app:logout' %}">
-                      {% csrf_token %}
-                      <button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:10px 16px;">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
-                      </button>
-                    </form>
-
+                <div class="dropdown-option">
+                    <i class="fa-solid fa-repeat"></i>
+                    Switch Workspace
                 </div>
+                <a href="{% url 'setup_app:setup' %}" class="dropdown-option" style="text-decoration:none;color:inherit;">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+                <hr>
+                <!-- APPEARANCE -->
+                <div class="theme-title">Appearance Mode</div>
+                <div class="theme-buttons">
+                    <button id="lightMode">Light</button>
+                    <button id="darkMode">Dark</button>
+                </div>
+                <hr>
+                <!-- LOGOUT -->
+                <form method="POST" action="{% url 'auth_app:logout' %}" style="margin:0;padding:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:inherit;font-size:inherit;display:flex;align-items:center;gap:14px;padding:12px 0;">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
 
             </div>
 
@@ -158,7 +135,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       </div>
       <button class="action-btn btn-sky" style="margin-left:auto" id="addAssignmentBtn">
         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Add Task
+        Add Assignment
       </button>
     </div>
 
@@ -299,7 +276,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       <div style="margin-bottom:20px;"><label style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;display:block;margin-bottom:6px;">Description</label><textarea name="description" placeholder="Details..." rows="2" style="width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;resize:none;box-sizing:border-box;"></textarea></div>
       <div style="display:flex;gap:10px;">
         <button type="button" id="closeAssignmentModal" style="flex:1;padding:12px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;">Cancel</button>
-        <button type="submit" style="flex:1;padding:12px;background:#0ea5e9;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">Add Task</button>
+        <button type="submit" style="flex:1;padding:12px;background:#0ea5e9;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">Add Assignment</button>
       </div>
     </form>
   </div>

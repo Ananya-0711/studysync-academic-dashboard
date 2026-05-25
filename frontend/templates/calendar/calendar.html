@@ -27,17 +27,47 @@
     <div class="notification-box" id="bellBtn"><i class="fa-regular fa-bell"></i></div>
     <div class="profile-container">
       <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</button>
-      <div class="profile-dropdown" id="profileDropdown">
-        <div class="profile-header"><h3>{{ user.first_name }} {{ user.last_name }}</h3><p>{{ user.email }}</p></div>
-        <div class="dropdown-option"><i class="fa-solid fa-graduation-cap"></i>{{ user.username }}</div>
-        <div class="dropdown-option"><i class="fa-regular fa-calendar"></i>Joined {{ user.date_joined|date:"M Y" }}</div>
-        <a href="{% url 'setup_app:setup' %}" class="dropdown-option" style="text-decoration:none;"><i class="fa-solid fa-gear"></i>Setup Workspace</a>
-        <hr>
-        <div class="theme-title">Appearance Mode</div>
-        <div class="theme-buttons"><button id="lightMode">Light</button><button id="darkMode">Dark</button></div>
-        <hr>
-        <form method="POST" action="{% url 'auth_app:logout' %}">{% csrf_token %}<button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:10px 16px;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button></form>
-      </div>
+                  <!-- DROPDOWN -->
+            <div class="profile-dropdown" id="profileDropdown">
+                <!-- HEADER -->
+                <div class="profile-header">
+                    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                    <p>{{ user.email }}</p>
+                </div>
+                <!-- OPTIONS -->
+                <div class="dropdown-option">
+                    <i class="fa-solid fa-code"></i>
+                    Current Build
+                </div>
+                <div class="dropdown-option">
+                    <i class="fa-regular fa-calendar"></i>
+                    Joined {{ user.date_joined|date:"M Y" }}
+                </div>
+                <div class="dropdown-option">
+                    <i class="fa-solid fa-repeat"></i>
+                    Switch Workspace
+                </div>
+                <a href="{% url 'setup_app:setup' %}" class="dropdown-option" style="text-decoration:none;color:inherit;">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+                <hr>
+                <!-- APPEARANCE -->
+                <div class="theme-title">Appearance Mode</div>
+                <div class="theme-buttons">
+                    <button id="lightMode">Light</button>
+                    <button id="darkMode">Dark</button>
+                </div>
+                <hr>
+                <!-- LOGOUT -->
+                <form method="POST" action="{% url 'auth_app:logout' %}" style="margin:0;padding:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:inherit;font-size:inherit;display:flex;align-items:center;gap:14px;padding:12px 0;">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
     </div>
   </div>
 </nav>
@@ -69,28 +99,28 @@
       </div>
       <div class="section-box">
         <div class="section-box-header">
-            {{ month_name }}
+          <span id="calendarTitle">{{ month_name }}</span>
+          <div style="display:flex;gap:8px">
+            <button style="background:#f3f4f6; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:13px">&#8592;</button>
+            <button style="background:#f3f4f6; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:13px">&#8594;</button>
+          </div>
         </div>
         <div class="cal-grid" id="calendarGrid">
-          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:16px;">
-            {% for day_name in "Mon,Tue,Wed,Thu,Fri,Sat,Sun"|split:"," %}
-            <div style="text-align:center;font-size:12px;font-weight:700;color:#9ca3af;padding:4px;">{{ day_name }}</div>
+          {% for day_name in "Mon,Tue,Wed,Thu,Fri,Sat,Sun"|split:"," %}
+            <div class="cal-day-name">{{ day_name }}</div>
+          {% endfor %}
+          {% for week in cal %}
+            {% for day in week %}
+              {% if day == 0 %}
+                <div class="cal-day other"></div>
+              {% else %}
+                <div class="cal-day{% if day == today.day and today.month == current_month and today.year == current_year %} today{% endif %}{% if events_by_day|dictkey:day %} has-event{% endif %}"
+                     {% if events_by_day|dictkey:day %}title="{% for ev in events_by_day|dictkey:day %}{{ ev.title }}{% if not forloop.last %}, {% endif %}{% endfor %}"{% endif %}>
+                  {{ day }}
+                </div>
+              {% endif %}
             {% endfor %}
-            {% for week in cal %}
-              {% for day in week %}
-              <div style="min-height:50px;border-radius:8px;padding:4px;text-align:center;{% if day == today.day %}background:#ede9fe;{% else %}background:#f9fafb;{% endif %}border:1px solid {% if day == today.day %}#7c3aed{% else %}#e5e7eb{% endif %};">
-                {% if day != 0 %}
-                <div style="font-size:12px;font-weight:{% if day == today.day %}700{% else %}500{% endif %};color:{% if day == today.day %}#7c3aed{% else %}#374151{% endif %};">{{ day }}</div>
-                {% if events_by_day|dictkey:day %}
-                  {% for ev in events_by_day|dictkey:day %}
-                  <div style="font-size:9px;margin-top:2px;background:{{ ev.dot_color }};color:#fff;border-radius:3px;padding:1px 3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ ev.title|truncatechars:10 }}</div>
-                  {% endfor %}
-                {% endif %}
-                {% endif %}
-              </div>
-              {% endfor %}
-            {% endfor %}
-          </div>
+          {% endfor %}
         </div>
       </div>
       <div class="section-box">

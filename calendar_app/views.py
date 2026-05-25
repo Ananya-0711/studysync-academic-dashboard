@@ -41,6 +41,8 @@ def calendar_view(request):
         'upcoming_count': upcoming_events.count(),
         'reminders_count': reminders.count(),
         'today': today,
+        'current_month': today.month,
+        'current_year': today.year,
         'cal': cal,
         'events_by_day': events_by_day,
         'month_name': today.strftime('%B %Y'),

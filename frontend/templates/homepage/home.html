@@ -70,70 +70,47 @@
 
             <!-- DROPDOWN -->
 
-            <div class="profile-dropdown"
-                id="profileDropdown">
-
+                        <!-- DROPDOWN -->
+            <div class="profile-dropdown" id="profileDropdown">
                 <!-- HEADER -->
-
                 <div class="profile-header">
-
-                    <h3>
-                        {{ user.first_name }} {{ user.last_name }}
-                    </h3>
-
-                    <p>
-                        {{ user.email }}
-                    </p>
-
+                    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                    <p>{{ user.email }}</p>
                 </div>
-
                 <!-- OPTIONS -->
-
                 <div class="dropdown-option">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                    {{ user.username }}
+                    <i class="fa-solid fa-code"></i>
+                    Current Build
                 </div>
-
                 <div class="dropdown-option">
                     <i class="fa-regular fa-calendar"></i>
                     Joined {{ user.date_joined|date:"M Y" }}
                 </div>
-
-                <a href="{% url 'setup_app:setup' %}" class="dropdown-option">
-                    <i class="fa-solid fa-gear"></i>
-                    Setup Workspace
-                </a>
-
-                <hr>
-
-                    <!-- APPEARANCE -->
-
-                    <div class="theme-title">
-
-                        Appearance Mode
-
-                    </div>
-
-                    <div class="theme-buttons">
-
-                      <button id="lightMode">Light</button>
-
-                      <button id="darkMode">Dark</button>
-
-                    </div>
-
-                <hr>
-
-                    <!-- LOGOUT -->
-
-                    <form method="POST" action="{% url 'auth_app:logout' %}">
-                      {% csrf_token %}
-                      <button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;padding:10px 16px;">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
-                      </button>
-                    </form>
-
+                <div class="dropdown-option">
+                    <i class="fa-solid fa-repeat"></i>
+                    Switch Workspace
                 </div>
+                <a href="{% url 'setup_app:setup' %}" class="dropdown-option" style="text-decoration:none;color:inherit;">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+                <hr>
+                <!-- APPEARANCE -->
+                <div class="theme-title">Appearance Mode</div>
+                <div class="theme-buttons">
+                    <button id="lightMode">Light</button>
+                    <button id="darkMode">Dark</button>
+                </div>
+                <hr>
+                <!-- LOGOUT -->
+                <form method="POST" action="{% url 'auth_app:logout' %}" style="margin:0;padding:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:inherit;font-size:inherit;display:flex;align-items:center;gap:14px;padding:12px 0;">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
 
             </div>
 
