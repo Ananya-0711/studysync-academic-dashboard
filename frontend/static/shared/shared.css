@@ -234,6 +234,37 @@ body {
   color: #ef4444;
 }
 
+/* Theme Appearance */
+.theme-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 14px;
+}
+
+.theme-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.theme-buttons button {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: inherit;
+}
+
+.theme-buttons button:hover {
+  background: #f5f3ff;
+  border-color: #7c3aed;
+  color: #7c3aed;
+}
+
 /* ---- Page Layout ---- */
 .page, #page-attendance, #page-notes, #page-planner, #page-calendar,
 .assignments-page, #page-dashboard {
