@@ -1,4 +1,4 @@
-﻿    /* ΓöÇΓöÇ RESET & BASE ΓöÇΓöÇ */
+    /* ΓöÇΓöÇ RESET & BASE ΓöÇΓöÇ */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -245,6 +245,9 @@ body {
   box-shadow:
     0 10px 30px rgba(0,0,0,0.08);
 }
+
+.profile-dropdown.open { display: block; animation: fadeDown 0.15s ease; }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
 /* HEADER */
 
