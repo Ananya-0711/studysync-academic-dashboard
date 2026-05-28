@@ -224,14 +224,33 @@ body {
   color: #6d28d9;
 }
 
+.dropdown-option:hover i {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
 .dropdown-option i {
-  width: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  color: #9ca3af;
+  color: #6d28d9;
+  font-size: 15px;
+  background: #f3eeff;
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s;
 }
 
 .dropdown-option.logout {
   color: #ef4444;
+}
+
+.dropdown-option.logout i {
+  color: #ef4444;
+  background: #fef2f2;
 }
 
 /* Theme Appearance */
@@ -502,10 +521,15 @@ body.dark-mode .dropdown-option:hover {
   background: #273449;
 }
 body.dark-mode .dropdown-option i {
-  color: #ffffff;
+  color: #c4b5fd;
+  background: #2d2055;
 }
 body.dark-mode .dropdown-option.logout {
   color: #ef4444;
+}
+body.dark-mode .dropdown-option.logout i {
+  color: #ef4444;
+  background: #3b1515;
 }
 body.dark-mode .profile-dropdown hr {
   border-top-color: #334155;
