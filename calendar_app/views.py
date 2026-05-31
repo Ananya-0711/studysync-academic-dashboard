@@ -9,6 +9,8 @@ from .models import CalendarEvent
 def calendar_view(request):
     user = request.user
     today = timezone.now().date()
+    month = int(request.GET.get('month', today.month))
+    year = int(request.GET.get('year', today.year))
     week_end = today + timezone.timedelta(days=7)
     month_start = today.replace(day=1)
     if today.month == 12:
@@ -24,13 +26,31 @@ def calendar_view(request):
 
     # Build calendar grid for current month
     import calendar as cal_module
-    cal = cal_module.monthcalendar(today.year, today.month)
+    cal = cal_module.monthcalendar(year, month)
     month_events = all_events.filter(date__gte=month_start, date__lt=month_end)
 
     # Map events to days
     events_by_day = {}
     for ev in month_events:
         events_by_day.setdefault(ev.date.day, []).append(ev)
+    
+    import datetime
+
+    display_date = datetime.date(year, month, 1)
+
+    if month == 1:
+        prev_month = 12
+        prev_year = year - 1
+    else:
+        prev_month = month - 1
+        prev_year = year
+
+    if month == 12:
+        next_month = 1
+        next_year = year + 1
+    else:
+        next_month = month + 1
+        next_year = year
 
     context = {
         'all_events': all_events,
@@ -41,11 +61,18 @@ def calendar_view(request):
         'upcoming_count': upcoming_events.count(),
         'reminders_count': reminders.count(),
         'today': today,
-        'current_month': today.month,
-        'current_year': today.year,
+
+        'current_month': month,
+        'current_year': year,
+
+        'prev_month': prev_month,
+        'prev_year': prev_year,
+        'next_month': next_month,
+        'next_year': next_year,
+
         'cal': cal,
         'events_by_day': events_by_day,
-        'month_name': today.strftime('%B %Y'),
+        'month_name': display_date.strftime('%B %Y'),
     }
     return render(request, 'calendar/calendar.html', context)
 

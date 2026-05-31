@@ -101,8 +101,17 @@
         <div class="section-box-header">
           <span id="calendarTitle">{{ month_name }}</span>
           <div style="display:flex;gap:8px">
-            <button style="background:#f3f4f6; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:13px">&#8592;</button>
-            <button style="background:#f3f4f6; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:13px">&#8594;</button>
+            <a href="?month={{ prev_month }}&year={{ prev_year }}">
+                <button style="background:#f3f4f6; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:13px">
+                    &#8592;
+                </button>
+            </a>
+
+            <a href="?month={{ next_month }}&year={{ next_year }}">
+                <button style="background:#f3f4f6; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:13px">
+                    &#8594;
+                </button>
+            </a>
           </div>
         </div>
         <div class="cal-grid" id="calendarGrid">

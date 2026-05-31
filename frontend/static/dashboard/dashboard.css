@@ -1106,6 +1106,17 @@ body.dark-mode p{
   color: #cbd5e1;
 }
 
+body.dark-mode p a{
+  color:#ddd6fe;
+  text-decoration:none;
+  font-weight:600;
+}
+
+body.dark-mode p a:hover{
+  color:#ede9fe;
+  text-decoration:underline;
+}
+
 /* INPUTS */
 
 body.dark-mode input{
@@ -1199,8 +1210,9 @@ body.dark-mode .profile-header p{
 
 /* LOGOUT */
 
-body.dark-mode .logout{
-  color:#f87171;
+body.dark-mode .logout,
+body.dark-mode .logout i{
+  color:red;
 }
 
 /* LINKS */
