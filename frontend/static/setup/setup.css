@@ -1087,6 +1087,16 @@ body.dark-mode .btn-cancel:hover{
   background:#334155;
 }
 
+/* MODAL FOOTER */
+body.dark-mode .modal-footer{
+  border-top-color:#334155;
+}
+
+/* MODAL HEADER */
+body.dark-mode .modal-header{
+  border-bottom-color:#334155;
+}
+
 /* EMPTY SLOT */
 
 body.dark-mode .empty-slot{
@@ -1109,6 +1119,24 @@ body.dark-mode .semester-tag{
   background:rgba(255,255,255,0.12);
   color:#f8fafc;
   border-color:rgba(255,255,255,0.18);
+}
+
+/* NOTIFICATION BOX */
+body.dark-mode .notification-box{
+  background:#273449;
+}
+body.dark-mode .notification-box i{
+  color:#c4b5fd;
+}
+
+/* DROPDOWN ICONS */
+body.dark-mode .dropdown-option i{
+  color:#c4b5fd;
+  background:#2d2055;
+}
+body.dark-mode .dropdown-option.logout i{
+  color:#ef4444;
+  background:#3b1515;
 }
 
 

@@ -24,7 +24,7 @@
     </ul>
   </div>
   <div class="nav-right">
-    <div class="notification-box" id="bellBtn"><i class="fa-regular fa-bell"></i></div>
+    <div class="notification-box" id="bellBtn"><i class="fa-regular fa-bell"></i>{% if notif_count %}<span class="notification-count">{{ notif_count }}</span>{% endif %}</div>
     <div class="profile-container">
       <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</button>
                   <!-- DROPDOWN -->
@@ -320,6 +320,7 @@
 </div>
 </div>
 
+<script id="notifData" type="application/json">{{ notif_items|safe }}</script>
 <script src="{% static 'shared/shared.js' %}"></script>
 <script src="{% static 'notes/notes.js' %}"></script>
 <script>

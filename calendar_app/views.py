@@ -26,15 +26,22 @@ def calendar_view(request):
 
     # Build calendar grid for current month
     import calendar as cal_module
+    import datetime
+
     cal = cal_module.monthcalendar(year, month)
-    month_events = all_events.filter(date__gte=month_start, date__lt=month_end)
+
+    # Filter events for the displayed month (not today's month)
+    display_month_start = datetime.date(year, month, 1)
+    if month == 12:
+        display_month_end = datetime.date(year + 1, 1, 1)
+    else:
+        display_month_end = datetime.date(year, month + 1, 1)
+    month_events = all_events.filter(date__gte=display_month_start, date__lt=display_month_end)
 
     # Map events to days
     events_by_day = {}
     for ev in month_events:
         events_by_day.setdefault(ev.date.day, []).append(ev)
-    
-    import datetime
 
     display_date = datetime.date(year, month, 1)
 

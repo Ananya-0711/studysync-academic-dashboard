@@ -8,16 +8,7 @@ function setCurrentDate() {
 }
 setCurrentDate();
 
-/* ── BELL NOTIFICATIONS SCROLL ── */
-const dashBellBtn = document.getElementById('bellBtn');
-if (dashBellBtn) {
-  dashBellBtn.addEventListener('click', () => {
-    const notifSection = document.querySelector('.bottom-right');
-    if (notifSection) {
-      notifSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
-}
+
 
 /* ── THEME MODE ── */
 const darkBtn = document.getElementById("darkMode");

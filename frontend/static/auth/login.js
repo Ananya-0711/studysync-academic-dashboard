@@ -16,3 +16,16 @@ function togglePassword(inputId, btn) {
       btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="#9ca3af" fill="none" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
     }
 }
+
+// Auto-dismiss flash messages after 4 seconds
+document.addEventListener('DOMContentLoaded', () => {
+  const messageContainer = document.querySelector('.messages');
+  if (messageContainer) {
+    setTimeout(() => {
+      messageContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      messageContainer.style.opacity = '0';
+      messageContainer.style.transform = 'translateY(-10px)';
+      setTimeout(() => messageContainer.remove(), 500);
+    }, 4000);
+  }
+});

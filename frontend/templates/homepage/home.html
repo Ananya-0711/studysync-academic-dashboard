@@ -53,9 +53,9 @@
 
             <i class="fa-regular fa-bell"></i>
 
-            <span class="notification-count">
-                {{ pending_count }}
-            </span>
+            {% if notif_count %}
+            <span class="notification-count">{{ notif_count }}</span>
+            {% endif %}
 
         </div>
 
@@ -733,6 +733,7 @@
 
 </div>
 
+<script id="notifData" type="application/json">{{ notif_items|safe }}</script>
 <script src="{% static 'shared/shared.js' %}"></script>
 <script src="{% static 'homepage/home.js' %}"></script>
 </body>

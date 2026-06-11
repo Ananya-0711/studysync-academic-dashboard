@@ -72,6 +72,23 @@ def mark_attendance(request):
             messages.error(request, 'Subject and date are required.')
             return redirect('attendance_app:attendance')
 
+        # Only allow marking attendance for today or past dates (no future)
+        from datetime import date as date_cls
+        try:
+            submitted_date = date_cls.fromisoformat(date)
+        except (ValueError, TypeError):
+            messages.error(request, 'Invalid date format.')
+            return redirect('attendance_app:attendance')
+
+        if submitted_date > timezone.now().date():
+            messages.error(request, 'Attendance cannot be marked for future dates.')
+            return redirect('attendance_app:attendance')
+
+        # Only allow present or absent status
+        if status not in ('present', 'absent'):
+            messages.error(request, 'Status must be either Present or Absent.')
+            return redirect('attendance_app:attendance')
+
         subject = get_object_or_404(Subject, pk=subject_id, user=request.user)
         obj, created = AttendanceRecord.objects.update_or_create(
             user=request.user,
@@ -82,3 +99,4 @@ def mark_attendance(request):
         msg = 'Attendance marked' if created else 'Attendance updated'
         messages.success(request, f'{msg} for {subject.name}.')
     return redirect('attendance_app:attendance')
+  

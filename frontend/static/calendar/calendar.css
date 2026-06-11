@@ -736,6 +736,44 @@ body.dark-mode .logout i{
   color:red;
 }
 
+/* SUMMARY VALUES */
+body.dark-mode .s-val{
+  color:#f8fafc;
+}
+
+/* STAT CHIP TEXT */
+body.dark-mode .stat-chip{
+  color:#f8fafc;
+}
+
+/* NOTIFICATION BOX */
+body.dark-mode .notification-box{
+  background:#273449;
+}
+body.dark-mode .notification-box i{
+  color:#c4b5fd;
+}
+
+/* DROPDOWN ICONS */
+body.dark-mode .dropdown-option i{
+  color:#c4b5fd;
+  background:#2d2055;
+}
+body.dark-mode .dropdown-option.logout i{
+  color:#ef4444;
+  background:#3b1515;
+}
+
+/* NAV DIVIDER */
+body.dark-mode .nav-divider{
+  background:#334155;
+}
+
+/* LIST ITEMS */
+body.dark-mode .list-item{
+  border-color:#334155;
+}
+
 
 /* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
    STUDYSYNC INFO MODAL

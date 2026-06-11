@@ -44,8 +44,8 @@
       <!-- Bell -->
         <div class="notification-box" id="bellBtn">
             <i class="fa-regular fa-bell"></i>
-            {% if overdue_count %}
-            <span class="notification-count">{{ overdue_count }}</span>
+            {% if notif_count %}
+            <span class="notification-count">{{ notif_count }}</span>
             {% endif %}
         </div>
         <!-- PROFILE -->
@@ -459,6 +459,7 @@
 </div>
 </div>
 
+<script id="notifData" type="application/json">{{ notif_items|safe }}</script>
 <script src="{% static 'shared/shared.js' %}"></script>
 <script>
 // CHART.JS 

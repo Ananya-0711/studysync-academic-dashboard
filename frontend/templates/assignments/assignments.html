@@ -53,9 +53,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
             <i class="fa-regular fa-bell"></i>
 
-            <span class="notification-count">
-                {{ pending_count }}
-            </span>
+            {% if notif_count %}
+            <span class="notification-count">{{ notif_count }}</span>
+            {% endif %}
 
         </div>
 
@@ -561,6 +561,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 </div>
 
+<script id="notifData" type="application/json">{{ notif_items|safe }}</script>
 <script src="{% static 'shared/shared.js' %}"></script>
 <script src="{% static 'assignments/assignments.js' %}"></script>
 <script>

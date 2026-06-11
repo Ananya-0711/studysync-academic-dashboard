@@ -1230,15 +1230,87 @@ body.dark-mode .alert-msg{
 }
 
 body.dark-mode .alert-msg strong{
-  color:red;
+  color:#fca5a5;
+}
+
+/* ── DARK MODE: ALERT CARDS ── */
+body.dark-mode .alert-card.critical{
+  background:#1c1017;
+  border-color:#7f1d1d;
+}
+
+body.dark-mode .alert-card.safe{
+  background:#0d1f17;
+  border-color:#14532d;
+}
+
+body.dark-mode .alert-pct{
+  color:#f8fafc;
+}
+
+body.dark-mode .alert-bar{
+  background:#334155;
+}
+
+/* ── DARK MODE: UPCOMING ASSIGNMENTS ── */
+body.dark-mode .upcoming-title{
+  color:#f8fafc !important;
+}
+
+body.dark-mode .upcoming-meta{
+  color:#94a3b8 !important;
+}
+
+body.dark-mode .upcoming-card{
+  border-color:#334155 !important;
+}
+
+body.dark-mode .upcoming-status.pending{
+  background:#422006 !important;
+  color:#fde68a !important;
+}
+
+/* ── DARK MODE: CHART LEGEND ── */
+body.dark-mode .chart-legend{
+  color:#cbd5e1;
 }
 
 body.dark-mode .dc-value{
   color:#c4b5fd;
 }
 
+body.dark-mode .dc-label{
+  color:#94a3b8;
+}
 
-/* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+/* ── DARK MODE: NOTIFICATION BOX ── */
+body.dark-mode .notification-box{
+  background:#273449;
+}
+
+body.dark-mode .notification-box i{
+  color:#c4b5fd;
+}
+
+/* ── DARK MODE: DROPDOWN OPTIONS ICON ── */
+body.dark-mode .dropdown-option i{
+  color:#c4b5fd;
+  background:#2d2055;
+}
+
+body.dark-mode .dropdown-option.logout i{
+  color:#ef4444;
+  background:#3b1515;
+}
+
+body.dark-mode .nav-divider{
+  background:#334155;
+}
+
+body.dark-mode .nav-links a:hover{
+  background:#1e293b;
+  color:#ffffff;
+}/* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
    STUDYSYNC INFO MODAL
    ABOUT + HOW IT WORKS + HELP CENTER
 ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
