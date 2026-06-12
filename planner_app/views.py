@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -9,10 +10,35 @@ from setup_app.models import Subject
 @login_required
 def planner_view(request):
     user = request.user
-    today = timezone.now().date()
+    now = timezone.now()
+    today = now.date()
+    current_time = now.time()
     week_start = today - timezone.timedelta(days=today.weekday())
     week_end = week_start + timezone.timedelta(days=6)
     next_week_end = today + timezone.timedelta(days=7)
+
+    # Auto-update session statuses:
+    # 1) Past-date sessions still marked upcoming/in_progress → done
+    StudySession.objects.filter(
+        user=user, date__lt=today, status__in=['upcoming', 'in_progress']
+    ).update(status='done')
+
+    # 2) Today's sessions: check start_time + duration to decide status
+    todays = StudySession.objects.filter(
+        user=user, date=today, status__in=['upcoming', 'in_progress']
+    )
+    for session in todays:
+        # Calculate end time: start_time + duration_hours
+        start_dt = datetime.datetime.combine(today, session.start_time)
+        end_dt = start_dt + datetime.timedelta(hours=float(session.duration_hours))
+        end_time = end_dt.time()
+
+        if current_time >= end_time:
+            session.status = 'done'
+            session.save(update_fields=['status'])
+        elif current_time >= session.start_time:
+            session.status = 'in_progress'
+            session.save(update_fields=['status'])
 
     today_sessions = StudySession.objects.filter(user=user, date=today).select_related('subject').order_by('start_time')
     weekly_sessions = StudySession.objects.filter(

@@ -27,14 +27,11 @@
     <div class="notification-box" id="bellBtn"><i class="fa-regular fa-bell"></i>{% if notif_count %}<span class="notification-count">{{ notif_count }}</span>{% endif %}</div>
     <div class="profile-container">
       <button class="profile-btn" id="profileBtn">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</button>
-                  <!-- DROPDOWN -->
             <div class="profile-dropdown" id="profileDropdown">
-                <!-- HEADER -->
                 <div class="profile-header">
                     <h3>{{ user.first_name }} {{ user.last_name }}</h3>
                     <p>{{ user.email }}</p>
                 </div>
-                <!-- OPTIONS -->
                 <div class="dropdown-option">
                     <i class="fa-solid fa-code"></i>
                     Current Build
@@ -52,14 +49,12 @@
                     Settings
                 </a>
                 <hr>
-                <!-- APPEARANCE -->
                 <div class="theme-title">Appearance Mode</div>
                 <div class="theme-buttons">
                     <button id="lightMode">Light</button>
                     <button id="darkMode">Dark</button>
                 </div>
                 <hr>
-                <!-- LOGOUT -->
                 <form method="POST" action="{% url 'auth_app:logout' %}" style="margin:0;padding:0;">
                     {% csrf_token %}
                     <button type="submit" class="dropdown-option logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:inherit;font-size:inherit;display:flex;align-items:center;gap:14px;padding:12px 0;">
@@ -102,7 +97,7 @@
         <div class="section-box-header">Pinned Notes</div>
         <div class="notes-grid">
           {% for note in pinned %}
-          <div class="note-card">
+          <div class="note-card" onclick="openViewNote('{{ note.title|escapejs }}', '{{ note.subject.name|default:"General"|escapejs }}', '{{ note.content|escapejs }}', '{{ note.updated_at|date:"M d, Y" }}', '{% for tag in note.tag_list %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}')">
             <h4>{{ note.title }}</h4>
             <p>{{ note.content|truncatechars:120 }}</p>
             <div class="note-card-footer">
@@ -110,8 +105,8 @@
               <span>{{ note.updated_at|date:"M d" }}</span>
             </div>
             <div style="display:flex;gap:6px;margin-top:8px;">
-              <form method="POST" action="{% url 'notes_app:toggle_pin' note.pk %}">{% csrf_token %}<button type="submit" style="background:#fef3c7;color:#f59e0b;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;">📌 Unpin</button></form>
-              <form method="POST" action="{% url 'notes_app:delete_note' note.pk %}">{% csrf_token %}<button type="submit" style="background:#fef2f2;color:#dc2626;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;" onclick="return confirm('Delete note?')">✕ Delete</button></form>
+              <form method="POST" action="{% url 'notes_app:toggle_pin' note.pk %}">{% csrf_token %}<button type="submit" style="background:#fef3c7;color:#f59e0b;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;" onclick="event.stopPropagation();">📌 Unpin</button></form>
+              <form method="POST" action="{% url 'notes_app:delete_note' note.pk %}">{% csrf_token %}<button type="submit" style="background:#fef2f2;color:#dc2626;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;" onclick="event.stopPropagation(); return confirm('Delete note?')">✕ Delete</button></form>
             </div>
           </div>
           {% endfor %}
@@ -119,14 +114,15 @@
       </div>
       {% endif %}
       <div class="section-box">
-        <div class="section-box-header">All Notes <span class="sub">By subject</span></div>
+        <div class="section-box-header">All Notes <span class="sub">{{ total_count }} notes</span></div>
         <table class="data-table">
-          <thead><tr><th>Title</th><th>Subject</th><th>Tags</th><th>Updated</th><th>Actions</th></tr></thead>
+          <thead><tr><th>Title</th><th>Subject</th><th>Content</th><th>Tags</th><th>Updated</th><th>Actions</th></tr></thead>
           <tbody>
             {% for note in all_notes %}
             <tr>
-              <td>{{ note.title }}</td>
+              <td><a href="#" class="note-title-link" onclick="event.preventDefault(); openViewNote('{{ note.title|escapejs }}', '{{ note.subject.name|default:"General"|escapejs }}', '{{ note.content|escapejs }}', '{{ note.updated_at|date:"M d, Y" }}', '{% for tag in note.tag_list %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}')">{{ note.title }}</a></td>
               <td>{{ note.subject.name|default:"General" }}</td>
+              <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ note.content|truncatechars:60 }}</td>
               <td>{% for tag in note.tag_list %}<span class="tag">{{ tag }}</span> {% empty %}—{% endfor %}</td>
               <td>{{ note.updated_at|date:"M d" }}</td>
               <td>
@@ -134,7 +130,7 @@
                 <form method="POST" action="{% url 'notes_app:delete_note' note.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" style="background:#fef2f2;color:#dc2626;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;" onclick="return confirm('Delete?')">✕</button></form>
               </td>
             </tr>
-            {% empty %}<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:20px;">No notes yet. Create your first note!</td></tr>{% endfor %}
+            {% empty %}<tr><td colspan="6" style="text-align:center;color:#9ca3af;padding:20px;">No notes yet. Create your first note!</td></tr>{% endfor %}
           </tbody>
         </table>
       </div>
@@ -145,9 +141,14 @@
       <div class="section-box">
         <div class="section-box-header">Pinned Notes <span class="sub">{{ pinned_count }} pinned</span></div>
         <table class="data-table">
-          <thead><tr><th>Title</th><th>Subject</th><th>Updated</th></tr></thead>
+          <thead><tr><th>Title</th><th>Subject</th><th>Content</th><th>Updated</th></tr></thead>
           <tbody>
-            {% for note in pinned %}<tr><td>{{ note.title }}</td><td>{{ note.subject.name|default:"General" }}</td><td>{{ note.updated_at|date:"M d" }}</td></tr>{% empty %}<tr><td colspan="3" style="text-align:center;color:#9ca3af;padding:20px;">No pinned notes.</td></tr>{% endfor %}
+            {% for note in pinned %}<tr>
+              <td><a href="#" class="note-title-link" onclick="event.preventDefault(); openViewNote('{{ note.title|escapejs }}', '{{ note.subject.name|default:"General"|escapejs }}', '{{ note.content|escapejs }}', '{{ note.updated_at|date:"M d, Y" }}', '{% for tag in note.tag_list %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}')">{{ note.title }}</a></td>
+              <td>{{ note.subject.name|default:"General" }}</td>
+              <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ note.content|truncatechars:60 }}</td>
+              <td>{{ note.updated_at|date:"M d" }}</td>
+            </tr>{% empty %}<tr><td colspan="4" style="text-align:center;color:#9ca3af;padding:20px;">No pinned notes.</td></tr>{% endfor %}
           </tbody>
         </table>
       </div>
@@ -171,9 +172,15 @@
       <div class="section-box">
         <div class="section-box-header">Recently Updated <span class="sub">Last 7 days</span></div>
         <table class="data-table">
-          <thead><tr><th>Title</th><th>Subject</th><th>Tags</th><th>Updated</th></tr></thead>
+          <thead><tr><th>Title</th><th>Subject</th><th>Content</th><th>Tags</th><th>Updated</th></tr></thead>
           <tbody>
-            {% for note in recent %}<tr><td>{{ note.title }}</td><td>{{ note.subject.name|default:"General" }}</td><td>{% for tag in note.tag_list %}<span class="tag">{{ tag }}</span> {% endfor %}</td><td>{{ note.updated_at|date:"M d" }}</td></tr>{% empty %}<tr><td colspan="4" style="text-align:center;color:#9ca3af;padding:20px;">No recent notes.</td></tr>{% endfor %}
+            {% for note in recent %}<tr>
+              <td><a href="#" class="note-title-link" onclick="event.preventDefault(); openViewNote('{{ note.title|escapejs }}', '{{ note.subject.name|default:"General"|escapejs }}', '{{ note.content|escapejs }}', '{{ note.updated_at|date:"M d, Y" }}', '{% for tag in note.tag_list %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}')">{{ note.title }}</a></td>
+              <td>{{ note.subject.name|default:"General" }}</td>
+              <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ note.content|truncatechars:60 }}</td>
+              <td>{% for tag in note.tag_list %}<span class="tag">{{ tag }}</span> {% endfor %}</td>
+              <td>{{ note.updated_at|date:"M d" }}</td>
+            </tr>{% empty %}<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:20px;">No recent notes.</td></tr>{% endfor %}
           </tbody>
         </table>
       </div>
@@ -202,6 +209,24 @@
         <button type="submit" style="flex:1;padding:12px;background:#f59e0b;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">Save Note</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- View Note Modal -->
+<div id="viewNoteModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:560px;margin:20px;max-height:80vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <h3 id="viewNoteTitle" style="font-size:20px;font-weight:800;color:#1f2937;flex:1;margin-right:12px;"></h3>
+      <button type="button" id="closeViewNote" style="background:#f3f4f6;color:#6b7280;border:none;border-radius:8px;padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer;">✕</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <span id="viewNoteSubject" style="background:#ede9fe;color:#7c3aed;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;"></span>
+      <span id="viewNoteDate" style="background:#f3f4f6;color:#6b7280;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;"></span>
+    </div>
+    <div id="viewNoteTags" style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;"></div>
+    <div style="border-top:1px solid #f3f4f6;padding-top:16px;">
+      <p id="viewNoteContent" style="font-size:14px;color:#374151;line-height:1.7;white-space:pre-wrap;"></p>
+    </div>
   </div>
 </div>
 
@@ -248,76 +273,73 @@
         </div>
       </div>
     </div>
+    </div>
+    <div class="info-page" id="worksPage" style="display:none;">
+      <div class="journey-header">
+        <h1>Your StudySync Journey</h1>
+        <p>Discover how StudySync helps students stay organized, productive, and academically focused through a smarter academic workflow.</p>
+      </div>
+      <div class="journey-container">
+        <div class="journey-item featured">
+          <div class="journey-number">01</div>
+          <div class="journey-card">
+            <div class="journey-card-top"><div><span class="journey-badge">START HERE</span><h2>Create Your Account</h2></div><span class="journey-icon">👤</span></div>
+            <div class="journey-card-body"><p>Create your personalized StudySync workspace and access all academic productivity tools from one centralized platform.</p></div>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-number">02</div>
+          <div class="journey-card">
+            <div class="journey-card-top"><h2>Complete Your Setup</h2><span class="journey-icon">⚙️</span></div>
+            <div class="journey-card-body"><p>Add subjects, schedules, semester details, and personalize your dashboard experience.</p></div>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-number">03</div>
+          <div class="journey-card">
+            <div class="journey-card-top"><h2>Track Attendance</h2><span class="journey-icon">✅</span></div>
+            <div class="journey-card-body"><p>Monitor attendance percentages, maintain records, and stay updated with academic requirements.</p></div>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-number">04</div>
+          <div class="journey-card">
+            <div class="journey-card-top"><h2>Manage Assignments</h2><span class="journey-icon">📝</span></div>
+            <div class="journey-card-body"><p>Organize coursework, deadlines, and assignment submissions efficiently.</p></div>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-number">05</div>
+          <div class="journey-card">
+            <div class="journey-card-top"><h2>Organize Notes</h2><span class="journey-icon">📚</span></div>
+            <div class="journey-card-body"><p>Keep class notes structured and accessible for revision and collaborative learning.</p></div>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-number">06</div>
+          <div class="journey-card">
+            <div class="journey-card-top"><h2>Plan Study Sessions</h2><span class="journey-icon">🧠</span></div>
+            <div class="journey-card-body"><p>Build productive study schedules and maintain focus through smart planning tools.</p></div>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-number">07</div>
+          <div class="journey-card">
+            <div class="journey-card-top"><h2>Stay Synced with Calendar</h2><span class="journey-icon">📅</span></div>
+            <div class="journey-card-body"><p>Track exams, events, submissions, and academic milestones using the calendar.</p></div>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="journey-number">08</div>
+          <div class="journey-card">
+            <div class="journey-card-top"><h2>Achieve Better Productivity</h2><span class="journey-icon">⭐</span></div>
+            <div class="journey-card-body"><p>Stay consistent, reduce stress, and improve your academic workflow daily.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="about-footer">StudySync — Learn Smarter. Stress Less. 🚀</div>
   </div>
-</div>
-</div>
-
-<div class="info-page" id="worksPage" style="display:none;">
-  <div class="journey-header">
-    <h1>Your StudySync Journey</h1>
-    <p>Discover how StudySync helps students stay organized, productive, and academically focused through a smarter academic workflow.</p>
-  </div>
-  <div class="journey-container">
-    <div class="journey-item featured">
-      <div class="journey-number">01</div>
-      <div class="journey-card">
-        <div class="journey-card-top"><div><span class="journey-badge">START HERE</span><h2>Create Your Account</h2></div><span class="journey-icon">👤</span></div>
-        <div class="journey-card-body"><p>Create your personalized StudySync workspace and access all academic productivity tools from one centralized platform.</p></div>
-      </div>
-    </div>
-    <div class="journey-item">
-      <div class="journey-number">02</div>
-      <div class="journey-card">
-        <div class="journey-card-top"><h2>Complete Your Setup</h2><span class="journey-icon">⚙️</span></div>
-        <div class="journey-card-body"><p>Add subjects, schedules, semester details, and personalize your dashboard experience.</p></div>
-      </div>
-    </div>
-    <div class="journey-item">
-      <div class="journey-number">03</div>
-      <div class="journey-card">
-        <div class="journey-card-top"><h2>Track Attendance</h2><span class="journey-icon">✅</span></div>
-        <div class="journey-card-body"><p>Monitor attendance percentages, maintain records, and stay updated with academic requirements.</p></div>
-      </div>
-    </div>
-    <div class="journey-item">
-      <div class="journey-number">04</div>
-      <div class="journey-card">
-        <div class="journey-card-top"><h2>Manage Assignments</h2><span class="journey-icon">📝</span></div>
-        <div class="journey-card-body"><p>Organize coursework, deadlines, and assignment submissions efficiently.</p></div>
-      </div>
-    </div>
-    <div class="journey-item">
-      <div class="journey-number">05</div>
-      <div class="journey-card">
-        <div class="journey-card-top"><h2>Organize Notes</h2><span class="journey-icon">📚</span></div>
-        <div class="journey-card-body"><p>Keep class notes structured and accessible for revision and collaborative learning.</p></div>
-      </div>
-    </div>
-    <div class="journey-item">
-      <div class="journey-number">06</div>
-      <div class="journey-card">
-        <div class="journey-card-top"><h2>Plan Study Sessions</h2><span class="journey-icon">🧠</span></div>
-        <div class="journey-card-body"><p>Build productive study schedules and maintain focus through smart planning tools.</p></div>
-      </div>
-    </div>
-    <div class="journey-item">
-      <div class="journey-number">07</div>
-      <div class="journey-card">
-        <div class="journey-card-top"><h2>Stay Synced with Calendar</h2><span class="journey-icon">📅</span></div>
-        <div class="journey-card-body"><p>Track exams, events, submissions, and academic milestones using the calendar.</p></div>
-      </div>
-    </div>
-    <div class="journey-item">
-      <div class="journey-number">08</div>
-      <div class="journey-card">
-        <div class="journey-card-top"><h2>Achieve Better Productivity</h2><span class="journey-icon">⭐</span></div>
-        <div class="journey-card-body"><p>Stay consistent, reduce stress, and improve your academic workflow daily.</p></div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
 </div>
 
 <script id="notifData" type="application/json">{{ notif_items|safe }}</script>
@@ -329,6 +351,32 @@
   const closeNoteModal = document.getElementById('closeNoteModal');
   if(addNoteBtn) addNoteBtn.onclick = () => { noteModal.style.display = 'flex'; };
   if(closeNoteModal) closeNoteModal.onclick = () => { noteModal.style.display = 'none'; };
+
+  // View Note Modal
+  const viewModal = document.getElementById('viewNoteModal');
+  const closeViewBtn = document.getElementById('closeViewNote');
+  function openViewNote(title, subject, content, date, tags) {
+    document.getElementById('viewNoteTitle').textContent = title;
+    document.getElementById('viewNoteSubject').textContent = subject;
+    document.getElementById('viewNoteContent').textContent = content || '(No content)';
+    document.getElementById('viewNoteDate').textContent = date;
+    const tagsContainer = document.getElementById('viewNoteTags');
+    tagsContainer.innerHTML = '';
+    if (tags) {
+      tags.split(',').forEach(function(tag) {
+        tag = tag.trim();
+        if (tag) {
+          const span = document.createElement('span');
+          span.className = 'tag';
+          span.textContent = tag;
+          tagsContainer.appendChild(span);
+        }
+      });
+    }
+    viewModal.style.display = 'flex';
+  }
+  if(closeViewBtn) closeViewBtn.onclick = () => { viewModal.style.display = 'none'; };
+  if(viewModal) viewModal.onclick = (e) => { if(e.target === viewModal) viewModal.style.display = 'none'; };
 </script>
 </body>
 </html>
